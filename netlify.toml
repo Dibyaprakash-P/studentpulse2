@@ -1,0 +1,15 @@
+# Netlify deployment configuration for Student Pulse Frontend
+
+[build]
+  base = "frontend"
+  command = "npm run build"
+  publish = "out"
+
+# Environment variables — set NEXT_PUBLIC_API_URL in Netlify dashboard
+# to your Render.com backend URL (e.g. https://student-pulse-api.onrender.com)
+
+# SPA fallback for client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
