@@ -4,6 +4,7 @@ import GlassCard from "@/components/ui/GlassCard";
 import NeonButton from "@/components/ui/NeonButton";
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { schedulePush } from "@/lib/cloudSync";
 
 const STORAGE_KEY = "sp_homework";
 
@@ -12,7 +13,11 @@ function loadItems() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; }
 }
 function saveItems(items) {
-  if (typeof window !== "undefined") localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  if (typeof window !== "undefined") {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    const user = JSON.parse(localStorage.getItem("sp_user") || "null");
+    if (user?.email) schedulePush(user.email);
+  }
 }
 
 function timeUntil(dateStr) {

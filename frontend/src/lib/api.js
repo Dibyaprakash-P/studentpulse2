@@ -1,7 +1,10 @@
 /**
- * Student Pulse — Fully Client-Side API (localStorage)
- * No backend required. All data lives in the browser.
+ * Student Pulse — Client-Side API with Cloud Sync
+ * Data lives in localStorage AND syncs to Firebase Firestore
+ * so the same Google account sees the same data on every device.
  */
+
+import { pullFromCloud, schedulePush } from "./cloudSync";
 
 const KEYS = {
   USERS: "sp_users",
@@ -18,7 +21,12 @@ function store(key) {
   try { return JSON.parse(localStorage.getItem(key)); } catch { return null; }
 }
 function save(key, val) {
-  if (typeof window !== "undefined") localStorage.setItem(key, JSON.stringify(val));
+  if (typeof window !== "undefined") {
+    localStorage.setItem(key, JSON.stringify(val));
+    // Schedule cloud sync after every data mutation
+    const user = store(KEYS.USER);
+    if (user?.email) schedulePush(user.email);
+  }
 }
 
 // ── Simple burnout prediction algorithm (replaces ML backend) ──────────
@@ -238,6 +246,8 @@ class ApiClient {
     const safeUser = { ...user }; delete safeUser.password;
     localStorage.setItem(KEYS.USER, JSON.stringify(safeUser));
     localStorage.setItem("sp_refresh_token", token);
+    // Pull cloud data on login
+    await pullFromCloud(safeUser.email);
     return { access_token: token, refresh_token: token, user: safeUser };
   }
 
@@ -267,7 +277,7 @@ class ApiClient {
   }
 
   // ── Google OAuth Login/Register ──────────────────────────
-  loginWithGoogle(googleUser, role = "student") {
+  async loginWithGoogle(googleUser, role = "student") {
     const users = store(KEYS.USERS) || [];
     let user = users.find(u => u.email === googleUser.email);
 
@@ -302,6 +312,9 @@ class ApiClient {
     const safeUser = { ...user }; delete safeUser.password;
     localStorage.setItem(KEYS.USER, JSON.stringify(safeUser));
     localStorage.setItem("sp_refresh_token", token);
+    // Pull cloud data on Google login, then push any local-only data
+    await pullFromCloud(safeUser.email);
+    schedulePush(safeUser.email);
     return { access_token: token, refresh_token: token, user: safeUser };
   }
 

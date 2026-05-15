@@ -4,6 +4,7 @@ import NeonButton from "@/components/ui/NeonButton";
 import GlassCard from "@/components/ui/GlassCard";
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { schedulePush } from "@/lib/cloudSync";
 
 const STORAGE_KEY = "sp_attendance";
 
@@ -12,7 +13,11 @@ function loadSubjects() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; }
 }
 function saveSubjects(subjects) {
-  if (typeof window !== "undefined") localStorage.setItem(STORAGE_KEY, JSON.stringify(subjects));
+  if (typeof window !== "undefined") {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(subjects));
+    const user = JSON.parse(localStorage.getItem("sp_user") || "null");
+    if (user?.email) schedulePush(user.email);
+  }
 }
 
 const SUBJECT_COLORS = [
