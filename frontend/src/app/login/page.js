@@ -436,7 +436,7 @@ export default function LoginRegister() {
                   <div>
                     <label style={labelStyle}>📅 Date of Birth</label>
                     <input type="date" className="form-input" value={dob}
-                      onChange={e => setDob(e.target.value)} style={{ colorScheme: "dark" }} required />
+                      onChange={e => setDob(e.target.value)} max={new Date().toISOString().split("T")[0]} style={{ colorScheme: "dark" }} required />
                   </div>
                   <div>
                     <label style={labelStyle}>Gender</label>
