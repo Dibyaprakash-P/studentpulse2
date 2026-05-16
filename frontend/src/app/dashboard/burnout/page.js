@@ -82,27 +82,30 @@ export default function BurnoutAnalytics() {
           <div style={{ flex: 1, width: "100%", minHeight: 0 }}>
             {dailyData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={dailyData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <AreaChart data={dailyData} margin={{ top: 10, right: 20, left: 0, bottom: 5 }}>
                   <defs>
                     <linearGradient id="bEnergy" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="var(--primary-cyan)" stopOpacity={0.4} />
-                      <stop offset="95%" stopColor="var(--primary-cyan)" stopOpacity={0} />
+                      <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="#38bdf8" stopOpacity={0.02} />
                     </linearGradient>
                     <linearGradient id="bStress" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="var(--danger)" stopOpacity={0.4} />
-                      <stop offset="95%" stopColor="var(--danger)" stopOpacity={0} />
+                      <stop offset="5%" stopColor="#fb7185" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="#fb7185" stopOpacity={0.02} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
-                  <XAxis dataKey="time" stroke="rgba(255,255,255,0.5)" tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 12 }} />
-                  <YAxis stroke="rgba(255,255,255,0.5)" tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 12 }} />
-                  <Tooltip contentStyle={{ backgroundColor: "rgba(20,20,30,0.9)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12 }} />
-                  <Area type="monotone" dataKey="energy" stroke="var(--primary-cyan)" fill="url(#bEnergy)" />
-                  <Area type="monotone" dataKey="stress" stroke="var(--danger)" fill="url(#bStress)" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" vertical={false} />
+                  <XAxis dataKey="time" stroke="rgba(128,128,128,0.3)" tick={{ fill: "#94a3b8", fontSize: 12 }} tickLine={false} dy={6} />
+                  <YAxis domain={[0, 10]} stroke="rgba(128,128,128,0.3)" tick={{ fill: "#94a3b8", fontSize: 11 }} tickLine={false} />
+                  <Tooltip contentStyle={{ backgroundColor: "rgba(20,20,30,0.9)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, fontSize: 13 }} />
+                  <Area type="monotone" dataKey="energy" stroke="#38bdf8" strokeWidth={2.5} fill="url(#bEnergy)" dot={{ r: 4, fill: "#38bdf8", strokeWidth: 2, stroke: "#fff" }} activeDot={{ r: 6 }} name="Energy" />
+                  <Area type="monotone" dataKey="stress" stroke="#fb7185" strokeWidth={2.5} fill="url(#bStress)" dot={{ r: 4, fill: "#fb7185", strokeWidth: 2, stroke: "#fff" }} activeDot={{ r: 6 }} name="Stress" />
                 </AreaChart>
               </ResponsiveContainer>
             ) : (
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "var(--text-muted)" }}>No data yet</div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "var(--text-muted)", flexDirection: "column", gap: 12 }}>
+                <span style={{ fontSize: "2.5rem" }}>📈</span>
+                <span>Log daily activities to see your energy vs stress chart</span>
+              </div>
             )}
           </div>
         </GlassCard>
