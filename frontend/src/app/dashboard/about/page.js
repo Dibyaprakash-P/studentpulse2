@@ -3,7 +3,6 @@
 import GlassCard from "@/components/ui/GlassCard";
 import { motion } from "framer-motion";
 
-export const metadata = {};
 
 const FEATURES = [
   { icon: "📊", title: "Smart Dashboard", desc: "Real-time overview of study habits, energy, and wellness metrics." },
