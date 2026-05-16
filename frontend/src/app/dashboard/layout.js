@@ -50,6 +50,7 @@ export default function DashboardLayout({ children }) {
     { name: "Burnout", path: "/dashboard/burnout", icon: "🧠" },
     { name: "Productivity", path: "/dashboard/productivity", icon: "📈" },
     { name: "Achievements", path: "/dashboard/achievements", icon: "🏆" },
+    { name: "About Us", path: "/dashboard/about", icon: "ℹ️" },
     { name: "Profile", path: "/dashboard/profile", icon: "⚙️" },
   ];
 
