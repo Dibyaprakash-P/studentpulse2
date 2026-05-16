@@ -39,36 +39,38 @@ export default function LoginRegister() {
 
   // Handle hash redirect (for popup fallback flow)
   useEffect(() => {
-    if (typeof window !== "undefined" && window.location.hash && window.location.hash.includes("id_token")) {
-      const hash = window.location.hash.substring(1);
-      window.history.replaceState(null, "", window.location.pathname);
-      const params = new URLSearchParams(hash);
-      const idToken = params.get("id_token");
-      if (idToken) {
-        // Decode and process
-        try {
-          const base64Url = idToken.split(".")[1];
-          const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-          const payload = JSON.parse(decodeURIComponent(
-            atob(base64).split("").map(c => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2)).join("")
-          ));
-          const googleUser = {
-            email: payload.email,
-            full_name: payload.name || payload.email.split("@")[0],
-            picture: payload.picture || null,
-            google_id: payload.sub,
-          };
-          const data = loginWithGoogleCredential(googleUser, role);
-          localStorage.setItem("sp_user", JSON.stringify(data.user));
-          localStorage.setItem("sp_access_token", data.access_token);
-          router.push(data.user.role === "parent" ? "/parent" : "/dashboard");
-        } catch { /* ignore */ }
+    (async () => {
+      if (typeof window !== "undefined" && window.location.hash && window.location.hash.includes("id_token")) {
+        const hash = window.location.hash.substring(1);
+        window.history.replaceState(null, "", window.location.pathname);
+        const params = new URLSearchParams(hash);
+        const idToken = params.get("id_token");
+        if (idToken) {
+          // Decode and process
+          try {
+            const base64Url = idToken.split(".")[1];
+            const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+            const payload = JSON.parse(decodeURIComponent(
+              atob(base64).split("").map(c => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2)).join("")
+            ));
+            const googleUser = {
+              email: payload.email,
+              full_name: payload.name || payload.email.split("@")[0],
+              picture: payload.picture || null,
+              google_id: payload.sub,
+            };
+            const data = await loginWithGoogleCredential(googleUser, role);
+            localStorage.setItem("sp_user", JSON.stringify(data.user));
+            localStorage.setItem("sp_access_token", data.access_token);
+            router.push(data.user.role === "parent" ? "/parent" : "/dashboard");
+          } catch { /* ignore */ }
+        }
       }
-    }
+    })();
   }, [router, role]);
 
   // Google Identity Services callback — handles the credential JWT
-  const handleGoogleCredentialResponse = (response) => {
+  const handleGoogleCredentialResponse = async (response) => {
     try {
       const idToken = response.credential;
       if (!idToken) {
@@ -91,7 +93,7 @@ export default function LoginRegister() {
         google_id: payload.sub,
       };
 
-      const data = loginWithGoogleCredential(googleUser, role);
+      const data = await loginWithGoogleCredential(googleUser, role);
       localStorage.setItem("sp_user", JSON.stringify(data.user));
       localStorage.setItem("sp_access_token", data.access_token);
       router.push(data.user.role === "parent" ? "/parent" : "/dashboard");
@@ -201,14 +203,14 @@ export default function LoginRegister() {
                     headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
                   })
                     .then(res => res.json())
-                    .then(userInfo => {
+                    .then(async (userInfo) => {
                       const googleUser = {
                         email: userInfo.email,
                         full_name: userInfo.name || userInfo.email.split("@")[0],
                         picture: userInfo.picture || null,
                         google_id: userInfo.sub,
                       };
-                      const data = loginWithGoogleCredential(googleUser, role);
+                      const data = await loginWithGoogleCredential(googleUser, role);
                       localStorage.setItem("sp_user", JSON.stringify(data.user));
                       localStorage.setItem("sp_access_token", data.access_token);
                       router.push(data.user.role === "parent" ? "/parent" : "/dashboard");
