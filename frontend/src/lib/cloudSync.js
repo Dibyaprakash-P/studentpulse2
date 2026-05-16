@@ -141,3 +141,55 @@ export function schedulePush(email) {
     if (syncEmail) pushToCloud(syncEmail);
   }, 2000); /* Debounce 2 seconds */
 }
+
+/* ── Account-Level Cloud Sync ──────────────────────────────────
+   Stores individual user accounts in a separate Firestore
+   collection so login works across devices/domains.
+   Collection: accounts/{sanitizedEmail}
+   ──────────────────────────────────────────────────────────── */
+
+/**
+ * Push a user account to Firestore (called on register & Google login)
+ */
+export async function pushAccountToCloud(userData) {
+  if (!isFirebaseConfigured() || !userData?.email) return;
+  const db = getDb();
+  if (!db) return;
+
+  try {
+    const docId = emailToId(userData.email);
+    await setDoc(doc(db, "accounts", docId), {
+      ...userData,
+      lastUpdated: new Date().toISOString(),
+    }, { merge: true });
+    console.log("[CloudSync] Account pushed to cloud for", userData.email);
+  } catch (err) {
+    console.warn("[CloudSync] Account push failed:", err.message);
+  }
+}
+
+/**
+ * Pull a user account from Firestore (called on login when user not found locally)
+ * Returns the user object or null if not found.
+ */
+export async function pullAccountFromCloud(email) {
+  if (!isFirebaseConfigured() || !email) return null;
+  const db = getDb();
+  if (!db) return null;
+
+  try {
+    const docId = emailToId(email);
+    const snap = await getDoc(doc(db, "accounts", docId));
+    if (snap.exists()) {
+      const data = snap.data();
+      // Remove Firestore metadata fields
+      delete data.lastUpdated;
+      console.log("[CloudSync] Account pulled from cloud for", email);
+      return data;
+    }
+    return null;
+  } catch (err) {
+    console.warn("[CloudSync] Account pull failed:", err.message);
+    return null;
+  }
+}

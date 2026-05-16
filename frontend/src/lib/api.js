@@ -4,7 +4,7 @@
  * so the same Google account sees the same data on every device.
  */
 
-import { pullFromCloud, schedulePush } from "./cloudSync";
+import { pullFromCloud, schedulePush, pushAccountToCloud, pullAccountFromCloud } from "./cloudSync";
 
 const KEYS = {
   USERS: "sp_users",
@@ -228,8 +228,20 @@ class ApiClient {
 
   // ── Auth ──────────────────────────────────────────────────
   async login(email, password) {
-    const users = store(KEYS.USERS) || [];
-    const user = users.find(u => u.email === email);
+    let users = store(KEYS.USERS) || [];
+    let user = users.find(u => u.email === email);
+
+    // If user not found locally, try pulling from cloud
+    if (!user) {
+      const cloudUser = await pullAccountFromCloud(email);
+      if (cloudUser) {
+        // Add cloud user to local store
+        users.push(cloudUser);
+        save(KEYS.USERS, users);
+        user = cloudUser;
+      }
+    }
+
     if (!user) throw new Error("No account found with this email. Please sign up first.");
     if (user.password !== password) throw new Error("Incorrect password. Please try again.");
 
@@ -253,7 +265,19 @@ class ApiClient {
 
   async register(userData) {
     const users = store(KEYS.USERS) || [];
+
+    // Check locally first
     if (users.find(u => u.email === userData.email)) throw new Error("An account with this email already exists.");
+
+    // Also check cloud to prevent duplicate accounts across devices
+    const cloudUser = await pullAccountFromCloud(userData.email);
+    if (cloudUser) {
+      // Account exists in cloud — add to local and inform user
+      users.push(cloudUser);
+      save(KEYS.USERS, users);
+      throw new Error("An account with this email already exists. Please log in instead.");
+    }
+
     if (!userData.password || userData.password.length < 6) throw new Error("Password must be at least 6 characters.");
 
     const newUser = {
@@ -268,23 +292,38 @@ class ApiClient {
     users.push(newUser);
     save(KEYS.USERS, users);
 
+    // Push account to cloud so it's available on other devices
+    await pushAccountToCloud(newUser);
+
     const token = "local_" + Math.random().toString(36).slice(2);
     this.setToken(token);
     const safeUser = { ...newUser }; delete safeUser.password;
     localStorage.setItem(KEYS.USER, JSON.stringify(safeUser));
     localStorage.setItem("sp_refresh_token", token);
+    // Push all data to cloud immediately
+    schedulePush(safeUser.email);
     return { access_token: token, refresh_token: token, user: safeUser };
   }
 
   // ── Google OAuth Login/Register ──────────────────────────
   async loginWithGoogle(googleUser, role = "student") {
-    const users = store(KEYS.USERS) || [];
+    let users = store(KEYS.USERS) || [];
     let user = users.find(u => u.email === googleUser.email);
+
+    // If not found locally, check cloud
+    if (!user) {
+      const cloudUser = await pullAccountFromCloud(googleUser.email);
+      if (cloudUser) {
+        users.push(cloudUser);
+        user = cloudUser;
+      }
+    }
 
     if (user) {
       // Existing user — update google info
       user.google_id = googleUser.google_id;
       if (googleUser.picture) user.picture = googleUser.picture;
+      if (googleUser.full_name) user.full_name = googleUser.full_name;
       const gam = computeGamification(user.id);
       user.level = gam.level;
       user.xp_points = gam.xp_points;
@@ -306,6 +345,9 @@ class ApiClient {
       users.push(user);
       save(KEYS.USERS, users);
     }
+
+    // Push account to cloud for cross-device access
+    await pushAccountToCloud(user);
 
     const token = "local_" + Math.random().toString(36).slice(2);
     this.setToken(token);
