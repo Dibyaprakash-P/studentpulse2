@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth";
 import { useTheme } from "@/lib/theme";
 import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function DashboardLayout({ children }) {
   const pathname = usePathname();
@@ -66,7 +67,7 @@ export default function DashboardLayout({ children }) {
   return (
     <div style={{ display: "flex", height: "100vh", overflow: "hidden", background: "var(--bg-primary)" }}>
 
-      {/* ═══ DESKTOP SIDEBAR — Frosted Glass ═══ */}
+      {/* ═══ DESKTOP SIDEBAR ═══ */}
       <aside className="desktop-sidebar" style={{
         width: 250, flexShrink: 0, display: "flex", flexDirection: "column",
         background: "var(--bg-secondary)",
@@ -79,9 +80,9 @@ export default function DashboardLayout({ children }) {
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{
               width: 34, height: 34, borderRadius: 10,
-              background: "linear-gradient(135deg, var(--primary-blue), var(--primary-purple))",
+              background: "linear-gradient(135deg, #39FF14, #00E676)",
               display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: "0 0 16px rgba(96, 165, 250, 0.2)",
+              boxShadow: "0 0 16px rgba(57, 255, 20, 0.3)",
             }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>
             </div>
@@ -102,7 +103,7 @@ export default function DashboardLayout({ children }) {
           </nav>
         </div>
 
-        {/* Theme Toggle + User — Frosted Glass */}
+        {/* Theme Toggle + User */}
         <div style={{ padding: 14, borderTop: "1px solid var(--border-subtle)" }}>
           <button onClick={toggle} style={{
             width: "100%", padding: "9px 14px", borderRadius: 12,
@@ -119,10 +120,10 @@ export default function DashboardLayout({ children }) {
           <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 4px" }}>
             <div style={{
               width: 36, height: 36, borderRadius: 10,
-              background: "linear-gradient(135deg, var(--primary-blue), var(--primary-purple))",
+              background: "linear-gradient(135deg, #39FF14, #00E676)",
               display: "flex", alignItems: "center", justifyContent: "center",
-              color: "white", fontWeight: 700, fontSize: "0.75rem",
-              boxShadow: "0 0 12px rgba(96, 165, 250, 0.15)",
+              color: "#0a0a0a", fontWeight: 700, fontSize: "0.75rem",
+              boxShadow: "0 0 12px rgba(57, 255, 20, 0.2)",
             }}>
               {initials}
             </div>
@@ -145,7 +146,7 @@ export default function DashboardLayout({ children }) {
       {/* ═══ MAIN AREA ═══ */}
       <main style={{ flex: 1, display: "flex", flexDirection: "column", height: "100%", overflow: "hidden" }}>
 
-        {/* MOBILE HEADER — Frosted Glass */}
+        {/* MOBILE HEADER */}
         <header className="mobile-header" style={{
           height: 58, padding: "0 16px", alignItems: "center", justifyContent: "space-between",
           background: "var(--bg-secondary)",
@@ -173,62 +174,69 @@ export default function DashboardLayout({ children }) {
             </button>
             <div style={{
               width: 30, height: 30, borderRadius: 8,
-              background: "linear-gradient(135deg, var(--primary-blue), var(--primary-purple))",
+              background: "linear-gradient(135deg, #39FF14, #00E676)",
               display: "flex", alignItems: "center", justifyContent: "center",
-              color: "white", fontWeight: 700, fontSize: "0.65rem",
+              color: "#0a0a0a", fontWeight: 700, fontSize: "0.65rem",
             }}>
               {initials}
             </div>
           </div>
         </header>
 
-        {/* MOBILE SLIDE MENU — Frosted Glass Overlay */}
-        {mobileMenuOpen && (
-          <div style={{
-            position: "fixed", top: 58, left: 0, right: 0, bottom: 0,
-            background: "var(--bg-secondary)",
-            backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
-            zIndex: 35, overflowY: "auto",
-            padding: 16, animation: "fadeInUp 0.2s ease",
-          }}>
-            <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-              {navItems.map(item => (
-                <Link key={item.path} href={item.path}
-                  className={`nav-item ${pathname === item.path ? "active" : ""}`}
-                  onClick={() => setMobileMenuOpen(false)}>
-                  <span style={{ fontSize: "1.2rem" }}>{item.icon}</span>
-                  <span style={{ fontSize: "1rem" }}>{item.name}</span>
-                </Link>
-              ))}
-            </nav>
-            <div style={{ marginTop: 20, padding: "16px 0", borderTop: "1px solid var(--border-subtle)" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-                <div style={{
-                  width: 38, height: 38, borderRadius: 10,
-                  background: "linear-gradient(135deg, var(--primary-blue), var(--primary-purple))",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  color: "white", fontWeight: 700, fontSize: "0.8rem",
-                }}>{initials}</div>
-                <div>
-                  <p style={{ fontWeight: 700 }}>{user?.full_name || "Student"}</p>
-                  <p style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>Level {user?.level || 1}</p>
+        {/* MOBILE SLIDE MENU */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              style={{
+                position: "fixed", top: 58, left: 0, right: 0, bottom: 0,
+                background: "var(--bg-secondary)",
+                backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
+                zIndex: 35, overflowY: "auto", padding: 16,
+              }}
+            >
+              <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                {navItems.map(item => (
+                  <Link key={item.path} href={item.path}
+                    className={`nav-item ${pathname === item.path ? "active" : ""}`}
+                    onClick={() => setMobileMenuOpen(false)}>
+                    <span style={{ fontSize: "1.2rem" }}>{item.icon}</span>
+                    <span style={{ fontSize: "1rem" }}>{item.name}</span>
+                  </Link>
+                ))}
+              </nav>
+              <div style={{ marginTop: 20, padding: "16px 0", borderTop: "1px solid var(--border-subtle)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+                  <div style={{
+                    width: 38, height: 38, borderRadius: 10,
+                    background: "linear-gradient(135deg, #39FF14, #00E676)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    color: "#0a0a0a", fontWeight: 700, fontSize: "0.8rem",
+                  }}>{initials}</div>
+                  <div>
+                    <p style={{ fontWeight: 700 }}>{user?.full_name || "Student"}</p>
+                    <p style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>Level {user?.level || 1}</p>
+                  </div>
                 </div>
+                <button onClick={logout} style={{
+                  width: "100%", padding: "11px", borderRadius: 12,
+                  border: "1px solid rgba(251, 113, 133, 0.3)",
+                  background: "rgba(251, 113, 133, 0.06)",
+                  backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
+                  color: "var(--danger)",
+                  cursor: "pointer", fontWeight: 700, fontSize: "0.875rem",
+                }}>
+                  🚪 Log Out
+                </button>
               </div>
-              <button onClick={logout} style={{
-                width: "100%", padding: "11px", borderRadius: 12,
-                border: "1px solid rgba(251, 113, 133, 0.3)",
-                background: "rgba(251, 113, 133, 0.06)",
-                backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
-                color: "var(--danger)",
-                cursor: "pointer", fontWeight: 700, fontSize: "0.875rem",
-              }}>
-                🚪 Log Out
-              </button>
-            </div>
-          </div>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* DESKTOP HEADER — Frosted Glass */}
+        {/* DESKTOP HEADER */}
         <header className="desktop-sidebar" style={{
           height: 58, display: "flex", alignItems: "center", justifyContent: "space-between",
           padding: "0 28px",
@@ -253,34 +261,37 @@ export default function DashboardLayout({ children }) {
         <div style={{ flex: 1, overflow: "auto", padding: "clamp(14px, 3vw, 28px)" }}>
           {/* Parent Monitoring Banner */}
           {parentOnline && !parentBannerDismissed && (
-            <div style={{
-              display: "flex", alignItems: "center", gap: 12,
-              padding: "10px 18px", marginBottom: 16, borderRadius: 14,
-              background: "rgba(192, 132, 252, 0.06)",
-              border: "1px solid rgba(192, 132, 252, 0.2)",
-              backdropFilter: "blur(12px)",
-              animation: "fadeInUp 0.3s ease",
-            }}>
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              style={{
+                display: "flex", alignItems: "center", gap: 12,
+                padding: "10px 18px", marginBottom: 16, borderRadius: 14,
+                background: "rgba(57, 255, 20, 0.06)",
+                border: "1px solid rgba(57, 255, 20, 0.15)",
+                backdropFilter: "blur(12px)",
+              }}
+            >
               <span style={{
                 width: 8, height: 8, borderRadius: "50%",
                 background: "var(--success)",
-                boxShadow: "0 0 8px rgba(74, 222, 128, 0.5)",
+                boxShadow: "0 0 8px rgba(52, 211, 153, 0.5)",
                 animation: "pulse 2s infinite",
                 flexShrink: 0,
               }} />
-              <span style={{ fontSize: "0.82rem", color: "var(--primary-purple)", fontWeight: 600, flex: 1 }}>
+              <span style={{ fontSize: "0.82rem", color: "var(--primary-lavender)", fontWeight: 600, flex: 1 }}>
                 👀 <strong>{parentOnline.name}</strong> is currently monitoring your dashboard
               </span>
               <button onClick={() => setParentBannerDismissed(true)} style={{
                 background: "none", border: "none", color: "var(--text-dim)",
                 cursor: "pointer", fontSize: "0.9rem", padding: "2px 6px",
               }}>✕</button>
-            </div>
+            </motion.div>
           )}
           {children}
         </div>
 
-        {/* MOBILE BOTTOM NAV — Frosted Glass */}
+        {/* MOBILE BOTTOM NAV */}
         <nav className="mobile-bottom-nav" style={{
           display: "none", height: 62,
           background: "var(--bg-secondary)",
@@ -294,9 +305,9 @@ export default function DashboardLayout({ children }) {
               <Link key={item.path} href={item.path} style={{
                 display: "flex", flexDirection: "column", alignItems: "center", gap: 3,
                 padding: "5px 8px", borderRadius: 12, textDecoration: "none",
-                color: active ? "var(--primary-cyan)" : "var(--text-dim)",
+                color: active ? "var(--primary-teal)" : "var(--text-dim)",
                 fontSize: "0.65rem", fontWeight: active ? 700 : 400, transition: "all 0.25s",
-                background: active ? "rgba(125, 211, 252, 0.08)" : "transparent",
+                background: active ? "rgba(57, 255, 20, 0.08)" : "transparent",
               }}>
                 <span style={{ fontSize: "1.2rem" }}>{item.icon}</span>
                 <span>{item.name}</span>

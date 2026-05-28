@@ -23,7 +23,7 @@ function saveSubjects(subjects) {
 const SUBJECT_COLORS = [
   "#3b82f6", "#8b5cf6", "#ef4444", "#f59e0b", "#10b981",
   "#ec4899", "#06b6d4", "#f97316", "#6366f1", "#14b8a6",
-  "#a855f7", "#e11d48", "#0ea5e9", "#84cc16",
+  "#39FF14", "#e11d48", "#0ea5e9", "#84cc16",
 ];
 
 export default function AttendancePage() {
@@ -145,7 +145,7 @@ export default function AttendancePage() {
       <AnimatePresence>
         {showForm && (
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} style={{ overflow: "hidden" }}>
-            <div className="glass-panel" style={{ marginBottom: 24, padding: "clamp(18px, 3vw, 26px)", borderLeft: `3px solid ${editingId ? "#a855f7" : "#3b82f6"}` }}>
+            <div className="glass-panel" style={{ marginBottom: 24, padding: "clamp(18px, 3vw, 26px)", borderLeft: `3px solid ${editingId ? "#39FF14" : "#3b82f6"}` }}>
               <h3 style={{ fontWeight: 700, fontFamily: "'Plus Jakarta Sans',sans-serif", marginBottom: 16, fontSize: "1rem" }}>
                 {editingId ? "✏️ Edit Subject" : "📚 Add New Subject"}
               </h3>

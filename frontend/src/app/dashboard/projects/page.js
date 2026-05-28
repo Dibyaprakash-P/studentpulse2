@@ -49,7 +49,7 @@ const FILE_ICONS = {
 function fileIcon(name) { const ext = name.split(".").pop().toLowerCase(); return FILE_ICONS[ext] || "📎"; }
 
 const STATUS_OPTIONS = ["Planning", "In Progress", "Completed"];
-const STATUS_COLORS = { Planning: "var(--warning)", "In Progress": "var(--primary-cyan)", Completed: "var(--success)" };
+const STATUS_COLORS = { Planning: "var(--warning)", "In Progress": "var(--primary-green)", Completed: "var(--success)" };
 
 const EMPTY_FORM = { title: "", description: "", deadline: "", deadlineTime: "", tags: [], files: [] };
 
@@ -126,7 +126,7 @@ export default function ProjectsPage() {
       <AnimatePresence>
         {showForm && (
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} style={{ overflow: "hidden" }}>
-            <div className="glass-panel" style={{ marginBottom: 24, padding: "clamp(18px, 3vw, 26px)", borderLeft: `3px solid ${editingId ? "var(--primary-purple)" : "var(--primary-cyan)"}` }}>
+            <div className="glass-panel" style={{ marginBottom: 24, padding: "clamp(18px, 3vw, 26px)", borderLeft: `3px solid ${editingId ? "var(--primary-green)" : "var(--primary-green)"}` }}>
               <h3 style={{ fontWeight: 700, fontFamily: "'Plus Jakarta Sans',sans-serif", marginBottom: 16, fontSize: "1rem" }}>
                 {editingId ? "✏️ Edit Project" : "📁 New Project"}
               </h3>
@@ -170,11 +170,11 @@ export default function ProjectsPage() {
                       {form.tags.map(t => (
                         <span key={t} style={{
                           padding: "4px 12px", borderRadius: 8, fontSize: "0.8rem", fontWeight: 600,
-                          background: "rgba(125,211,252,0.08)", color: "var(--primary-cyan)",
+                          background: "rgba(57,255,20,0.08)", color: "var(--primary-green)",
                           display: "flex", alignItems: "center", gap: 6,
                         }}>
                           {t}
-                          <button onClick={() => removeTag(t)} style={{ background: "none", border: "none", color: "var(--primary-cyan)", cursor: "pointer", fontSize: "0.9rem" }}>×</button>
+                          <button onClick={() => removeTag(t)} style={{ background: "none", border: "none", color: "var(--primary-green)", cursor: "pointer", fontSize: "0.9rem" }}>×</button>
                         </span>
                       ))}
                     </div>
@@ -237,7 +237,7 @@ export default function ProjectsPage() {
                   <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 14 }}>
                     <div style={{
                       width: 40, height: 40, borderRadius: 12, flexShrink: 0,
-                      background: "linear-gradient(135deg, rgba(125,211,252,0.15), rgba(192,132,252,0.1))",
+                      background: "linear-gradient(135deg, rgba(57,255,20,0.15), rgba(57,255,20,0.1))",
                       display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem",
                     }}>📁</div>
                     <div style={{ flex: 1, minWidth: 0 }}>
@@ -264,18 +264,18 @@ export default function ProjectsPage() {
                     <div style={{ flex: 1 }}>
                       <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.78rem", marginBottom: 6 }}>
                         <span style={{ color: "var(--text-dim)" }}>Progress</span>
-                        <span style={{ color: "var(--primary-cyan)", fontWeight: 700 }}>{p.progress}%</span>
+                        <span style={{ color: "var(--primary-green)", fontWeight: 700 }}>{p.progress}%</span>
                       </div>
                       <div style={{ height: 6, borderRadius: 6, background: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
                         <motion.div initial={{ width: 0 }} animate={{ width: `${p.progress}%` }}
                           transition={{ duration: 0.8, ease: "easeOut" }}
-                          style={{ height: "100%", borderRadius: 6, background: "linear-gradient(90deg, var(--primary-cyan), var(--primary-purple))" }} />
+                          style={{ height: "100%", borderRadius: 6, background: "linear-gradient(90deg, var(--primary-green), var(--primary-green))" }} />
                       </div>
                       <input type="range" min={0} max={100} step={5} value={p.progress}
                         onChange={e => setProgress(p.id, e.target.value)}
                         style={{
                           width: "100%", marginTop: 6,
-                          background: `linear-gradient(to right, var(--primary-cyan) ${pct}%, var(--border-light) ${pct}%)`,
+                          background: `linear-gradient(to right, var(--primary-green) ${pct}%, var(--border-light) ${pct}%)`,
                         }} />
                     </div>
                     {/* Deadline badge */}
@@ -297,7 +297,7 @@ export default function ProjectsPage() {
                       {p.tags?.map(t => (
                         <span key={t} style={{
                           padding: "3px 10px", borderRadius: 6, fontSize: "0.7rem", fontWeight: 600,
-                          background: "rgba(125,211,252,0.08)", color: "var(--primary-cyan)",
+                          background: "rgba(57,255,20,0.08)", color: "var(--primary-green)",
                         }}>{t}</span>
                       ))}
                       {p.files?.map(f => (

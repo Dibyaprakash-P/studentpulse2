@@ -5,12 +5,12 @@ import PulseLoader from "@/components/ui/PulseLoader";
 import { useDashboard } from "@/hooks/useDashboard";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Cell, LabelList } from "recharts";
 
-const BAR_COLORS = ["#3b82f6", "#8b5cf6", "#06b6d4", "#10b981", "#f59e0b", "#ec4899", "#f97316"];
+const BAR_COLORS = ["#14b8a6", "#6366f1", "#f59e0b", "#ec4899", "#06b6d4", "#8b5cf6", "#10b981"];
 
 /* Custom label rendered on top of each bar */
 function ScoreLabel({ x, y, width, value }) {
   return (
-    <text x={x + width / 2} y={y - 8} textAnchor="middle" fill="#334155" fontSize={13} fontWeight={700}>
+    <text x={x + width / 2} y={y - 8} textAnchor="middle" fill="var(--text-secondary)" fontSize={13} fontWeight={700}>
       {value}
     </text>
   );
@@ -39,22 +39,22 @@ export default function ProductivityInsights() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
       <div style={{ marginBottom: 8 }}>
-        <h2 style={{ fontSize: "1.875rem", fontWeight: 700, fontFamily: "'Outfit',sans-serif", marginBottom: 8 }}>Productivity Intelligence</h2>
+        <h2 style={{ fontSize: "1.875rem", fontWeight: 700, fontFamily: "'Plus Jakarta Sans',sans-serif", marginBottom: 8, letterSpacing: "-0.02em" }}>Productivity Intelligence</h2>
         <p style={{ color: "var(--text-muted)" }}>Analyze your study efficiency and focus patterns.</p>
       </div>
 
       <div className="grid grid-cols-1 md-grid-cols-3" style={{ gap: 24 }}>
-        <GlassCard delay={0.1} style={{ borderLeft: "3px solid #3b82f6" }}>
-          <div style={{ color: "#3b82f6", marginBottom: 8, fontSize: "0.875rem", fontWeight: 600 }}>Avg Study Time</div>
+        <GlassCard delay={0.1} accentColor="#14b8a6">
+          <div style={{ color: "#14b8a6", marginBottom: 8, fontSize: "0.875rem", fontWeight: 600 }}>Avg Study Time</div>
           <div style={{ fontSize: "1.875rem", fontWeight: 700, marginBottom: 4 }}>{avgStudy}h</div>
           <div style={{ fontSize: "0.875rem", color: "var(--text-muted)" }}>per day this week</div>
         </GlassCard>
-        <GlassCard delay={0.2} style={{ borderLeft: "3px solid #06b6d4" }}>
-          <div style={{ color: "#06b6d4", marginBottom: 8, fontSize: "0.875rem", fontWeight: 600 }}>Productivity Score</div>
+        <GlassCard delay={0.2} accentColor="#6366f1">
+          <div style={{ color: "#6366f1", marginBottom: 8, fontSize: "0.875rem", fontWeight: 600 }}>Productivity Score</div>
           <div style={{ fontSize: "1.875rem", fontWeight: 700, marginBottom: 4 }}>{prodScore}/100</div>
           <div style={{ fontSize: "0.875rem", color: "var(--text-muted)" }}>Grade: {grade}</div>
         </GlassCard>
-        <GlassCard delay={0.3} style={{ borderLeft: "3px solid #10b981" }}>
+        <GlassCard delay={0.3} accentColor="#10b981">
           <div style={{ color: "#10b981", marginBottom: 8, fontSize: "0.875rem", fontWeight: 600 }}>Consistency</div>
           <div style={{ fontSize: "1.875rem", fontWeight: 700, marginBottom: 4 }}>{consistency}%</div>
           <div style={{ fontSize: "0.875rem", color: "var(--text-muted)" }}>{w.days_logged || 0}/7 days logged</div>
@@ -63,7 +63,7 @@ export default function ProductivityInsights() {
 
       <div className="grid grid-cols-1 lg-grid-cols-3" style={{ gap: 24 }}>
         <GlassCard delay={0.4} className="lg-col-span-2" style={{ height: 400, display: "flex", flexDirection: "column" }}>
-          <h3 style={{ fontSize: "1.125rem", fontWeight: 700, marginBottom: 16, fontFamily: "'Outfit',sans-serif" }}>Daily Productivity Score</h3>
+          <h3 style={{ fontSize: "1.125rem", fontWeight: 700, marginBottom: 16, fontFamily: "'Plus Jakarta Sans',sans-serif" }}>Daily Productivity Score</h3>
           <div style={{ flex: 1, width: "100%", minHeight: 0 }}>
             {dailyData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
@@ -97,11 +97,11 @@ export default function ProductivityInsights() {
         </GlassCard>
 
         <GlassCard delay={0.5} style={{ display: "flex", flexDirection: "column" }}>
-          <h3 style={{ fontSize: "1.125rem", fontWeight: 700, marginBottom: 16, fontFamily: "'Outfit',sans-serif" }}>Time Distribution</h3>
+          <h3 style={{ fontSize: "1.125rem", fontWeight: 700, marginBottom: 16, fontFamily: "'Plus Jakarta Sans',sans-serif" }}>Time Distribution</h3>
           <ul style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <li style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: 12, background: "rgba(59,130,246,0.08)", borderRadius: 8, borderLeft: "3px solid #3b82f6" }}>
+            <li style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: 12, background: "rgba(20,184,166,0.08)", borderRadius: 8, borderLeft: "3px solid #14b8a6" }}>
               <span style={{ display: "flex", alignItems: "center", gap: 12 }}><span style={{ fontSize: "1.25rem" }}>📚</span> Study</span>
-              <span style={{ color: "#3b82f6", fontWeight: 700 }}>{avgStudy}h/day</span>
+              <span style={{ color: "#14b8a6", fontWeight: 700 }}>{avgStudy}h/day</span>
             </li>
             <li style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: 12, background: "rgba(244,63,94,0.08)", borderRadius: 8, borderLeft: "3px solid #f43f5e" }}>
               <span style={{ display: "flex", alignItems: "center", gap: 12 }}><span style={{ fontSize: "1.25rem" }}>🎮</span> Game & Fun</span>

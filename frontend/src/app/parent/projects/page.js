@@ -21,7 +21,7 @@ function formatDatetime(dateStr) {
   return new Date(dateStr).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", hour12: true });
 }
 
-const STATUS_COLORS = { Planning: "var(--warning)", "In Progress": "var(--primary-cyan)", Completed: "var(--success)" };
+const STATUS_COLORS = { Planning: "var(--warning)", "In Progress": "var(--primary-green)", Completed: "var(--success)" };
 
 export default function ParentProjectsMonitor() {
   const [projects, setProjects] = useState([]);
@@ -45,8 +45,8 @@ export default function ParentProjectsMonitor() {
       <div className="grid grid-cols-1 md-grid-cols-2 lg-grid-cols-3" style={{ gap: 14, marginBottom: 24 }}>
         {[
           { label: "Total Projects", value: projects.length, icon: "📁", color: "var(--text-main)" },
-          { label: "Active", value: active.length, icon: "🔧", color: "var(--primary-cyan)" },
-          { label: "Avg Progress", value: `${avgProgress}%`, icon: "📊", color: "var(--primary-purple)" },
+          { label: "Active", value: active.length, icon: "🔧", color: "var(--primary-green)" },
+          { label: "Avg Progress", value: `${avgProgress}%`, icon: "📊", color: "var(--primary-green)" },
         ].map((s, i) => (
           <div key={i} className="glass-panel" style={{ padding: "16px 20px", textAlign: "center" }}>
             <span style={{ fontSize: "1.4rem" }}>{s.icon}</span>
@@ -73,7 +73,7 @@ export default function ParentProjectsMonitor() {
                 <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 12 }}>
                   <div style={{
                     width: 40, height: 40, borderRadius: 12, flexShrink: 0,
-                    background: "linear-gradient(135deg, rgba(125,211,252,0.15), rgba(192,132,252,0.1))",
+                    background: "linear-gradient(135deg, rgba(57,255,20,0.15), rgba(57,255,20,0.1))",
                     display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem",
                   }}>📁</div>
                   <div style={{ flex: 1, minWidth: 0 }}>
@@ -92,10 +92,10 @@ export default function ParentProjectsMonitor() {
                     <div style={{ height: 6, borderRadius: 6, background: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
                       <motion.div initial={{ width: 0 }} animate={{ width: `${p.progress || 0}%` }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
-                        style={{ height: "100%", borderRadius: 6, background: "linear-gradient(90deg, var(--primary-cyan), var(--primary-purple))" }} />
+                        style={{ height: "100%", borderRadius: 6, background: "linear-gradient(90deg, var(--primary-green), var(--primary-green))" }} />
                     </div>
                   </div>
-                  <span style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--primary-cyan)", minWidth: 42, textAlign: "right" }}>{p.progress || 0}%</span>
+                  <span style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--primary-green)", minWidth: 42, textAlign: "right" }}>{p.progress || 0}%</span>
                 </div>
 
                 {/* Meta row */}

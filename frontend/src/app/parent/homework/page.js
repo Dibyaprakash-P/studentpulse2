@@ -66,9 +66,9 @@ export default function ParentHomeworkMonitor() {
         {["All", "Pending", "Overdue", "Completed"].map(f => (
           <button key={f} onClick={() => setFilter(f)} style={{
             padding: "7px 18px", borderRadius: 20, fontSize: "0.82rem", cursor: "pointer",
-            border: `1px solid ${filter === f ? "var(--primary-cyan)" : "var(--border-subtle)"}`,
-            background: filter === f ? "rgba(125,211,252,0.08)" : "transparent",
-            color: filter === f ? "var(--primary-cyan)" : "var(--text-muted)", fontWeight: filter === f ? 600 : 400,
+            border: `1px solid ${filter === f ? "var(--primary-green)" : "var(--border-subtle)"}`,
+            background: filter === f ? "rgba(57,255,20,0.08)" : "transparent",
+            color: filter === f ? "var(--primary-green)" : "var(--text-muted)", fontWeight: filter === f ? 600 : 400,
           }}>{f}</button>
         ))}
       </div>

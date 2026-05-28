@@ -1,4 +1,3 @@
-"use client";
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { api } from "@/lib/api";
 
@@ -19,8 +18,8 @@ export function AuthProvider({ children }) {
     setLoading(false);
   }, []);
 
-  const login = useCallback(async (email, password) => {
-    const data = await api.login(email, password);
+  const login = useCallback(async (email, password, rememberMe = false) => {
+    const data = await api.login(email, password, rememberMe);
     setUser(data.user);
     localStorage.setItem("sp_user", JSON.stringify(data.user));
     return data;

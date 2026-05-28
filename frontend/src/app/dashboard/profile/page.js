@@ -30,15 +30,15 @@ export default function Profile() {
   return (
     <div style={{ maxWidth: 900, margin: "0 auto", display: "flex", flexDirection: "column", gap: 32 }}>
       <div>
-        <h2 style={{ fontSize: "1.875rem", fontWeight: 700, fontFamily: "'Outfit',sans-serif", marginBottom: 8 }}>Profile & Settings</h2>
+        <h2 style={{ fontSize: "1.875rem", fontWeight: 700, fontFamily: "'Plus Jakarta Sans',sans-serif", marginBottom: 8, letterSpacing: "-0.02em" }}>Profile & Settings</h2>
         <p style={{ color: "var(--text-muted)" }}>Manage your account and parent connections.</p>
       </div>
 
       <div className="grid grid-cols-1 md-grid-cols-3" style={{ gap: 32 }}>
         {/* Profile Info */}
         <GlassCard delay={0.1} className="md-col-span-1" style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
-          <div style={{ width: 128, height: 128, borderRadius: "50%", background: "linear-gradient(135deg, var(--primary-cyan), var(--primary-purple))", padding: 4, marginBottom: 16 }}>
-            <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "#000", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "2.25rem", fontWeight: 700 }}>
+          <div style={{ width: 128, height: 128, borderRadius: "50%", background: "linear-gradient(135deg, var(--primary-teal), var(--primary-lavender))", padding: 4, marginBottom: 16 }}>
+            <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "var(--bg-primary)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "2.25rem", fontWeight: 700 }}>
               {initials}
             </div>
           </div>
@@ -47,7 +47,7 @@ export default function Profile() {
 
           <div style={{ width: "100%", background: "rgba(255,255,255,0.05)", borderRadius: 12, padding: 16, textAlign: "left" }}>
             <div style={{ fontSize: "0.875rem", color: "var(--text-muted)", marginBottom: 4 }}>Status</div>
-            <div style={{ fontWeight: 700, color: "var(--primary-cyan)" }}>Level {user?.level || 1} · {user?.xp_points || 0} XP</div>
+            <div style={{ fontWeight: 700, color: "var(--primary-teal)" }}>Level {user?.level || 1} · {user?.xp_points || 0} XP</div>
             <div style={{ fontSize: "0.875rem", color: "var(--text-muted)", marginTop: 16, marginBottom: 4 }}>Role</div>
             <div style={{ fontWeight: 700, textTransform: "capitalize" }}>{user?.role || "student"}</div>
             <div style={{ fontSize: "0.875rem", color: "var(--text-muted)", marginTop: 16, marginBottom: 4 }}>Streak</div>
@@ -58,7 +58,7 @@ export default function Profile() {
         {/* Parent Linking */}
         <div className="md-col-span-2" style={{ display: "flex", flexDirection: "column", gap: 24 }}>
           <GlassCard delay={0.2}>
-            <h3 style={{ fontSize: "1.25rem", fontWeight: 700, fontFamily: "'Outfit',sans-serif", marginBottom: 4, display: "flex", alignItems: "center", gap: 8 }}>
+            <h3 style={{ fontSize: "1.25rem", fontWeight: 700, fontFamily: "'Plus Jakarta Sans',sans-serif", marginBottom: 4, display: "flex", alignItems: "center", gap: 8 }}>
               <span>👨‍👩‍👧</span> Parent Connection
             </h3>
             <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", marginBottom: 24 }}>
@@ -80,7 +80,7 @@ export default function Profile() {
           </GlassCard>
 
           <GlassCard delay={0.3}>
-            <h3 style={{ fontSize: "1.25rem", fontWeight: 700, fontFamily: "'Outfit',sans-serif", color: "var(--danger)", marginBottom: 8 }}>Danger Zone</h3>
+            <h3 style={{ fontSize: "1.25rem", fontWeight: 700, fontFamily: "'Plus Jakarta Sans',sans-serif", color: "var(--danger)", marginBottom: 8 }}>Danger Zone</h3>
             <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", marginBottom: 16 }}>
               Log out of your account.
             </p>

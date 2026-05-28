@@ -153,7 +153,7 @@ export default function AssignmentPage() {
       <AnimatePresence>
         {showForm && (
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} style={{ overflow: "hidden" }}>
-            <div className="glass-panel" style={{ marginBottom: 24, padding: "clamp(18px, 3vw, 26px)", borderLeft: `3px solid ${editingId ? "#a855f7" : "#3b82f6"}` }}>
+            <div className="glass-panel" style={{ marginBottom: 24, padding: "clamp(18px, 3vw, 26px)", borderLeft: `3px solid ${editingId ? "#39FF14" : "#3b82f6"}` }}>
               <h3 style={{ fontWeight: 700, fontFamily: "'Plus Jakarta Sans',sans-serif", marginBottom: 16, fontSize: "1rem" }}>
                 {editingId ? "✏️ Edit Assignment" : "📋 New Assignment"}
               </h3>
@@ -210,9 +210,9 @@ export default function AssignmentPage() {
           <button key={f} onClick={() => setFilter(f)}
             style={{
               padding: "8px 20px", borderRadius: 20, fontSize: "0.875rem", cursor: "pointer", transition: "all 0.2s",
-              border: `1px solid ${filter === f ? "var(--primary-cyan)" : "var(--border-subtle)"}`,
-              background: filter === f ? "rgba(125,211,252,0.08)" : "transparent",
-              color: filter === f ? "var(--primary-cyan)" : "var(--text-muted)", fontWeight: filter === f ? 600 : 400,
+              border: `1px solid ${filter === f ? "var(--primary-green)" : "var(--border-subtle)"}`,
+              background: filter === f ? "rgba(57,255,20,0.08)" : "transparent",
+              color: filter === f ? "var(--primary-green)" : "var(--text-muted)", fontWeight: filter === f ? 600 : 400,
             }}>
             {f} {f === "Pending" && pending > 0 ? `(${pending})` : ""}
           </button>

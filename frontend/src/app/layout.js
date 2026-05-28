@@ -1,17 +1,24 @@
 import './globals.css';
 import { AuthProvider } from '@/lib/auth';
 import { ThemeProvider } from '@/lib/theme';
+import StarBackgroundWrapper from '@/components/ui/StarBackgroundWrapper';
+import SplashScreen from '@/components/ui/SplashScreen';
 
 export const metadata = {
   title: 'Student Pulse | AI Burnout Analytics',
   description: 'AI-Powered Student Burnout & Lifestyle Analytics Platform',
   manifest: '/manifest.json',
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
   icons: {
     icon: '/favicon.svg',
     shortcut: '/favicon.svg',
     apple: '/favicon.svg',
   },
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({ children }) {
@@ -21,9 +28,13 @@ export default function RootLayout({ children }) {
         <script src="https://accounts.google.com/gsi/client" async defer></script>
       </head>
       <body>
+        <StarBackgroundWrapper />
         <ThemeProvider>
           <AuthProvider>
-            {children}
+            <SplashScreen />
+            <div style={{ position: "relative", zIndex: 1 }}>
+              {children}
+            </div>
           </AuthProvider>
         </ThemeProvider>
       </body>

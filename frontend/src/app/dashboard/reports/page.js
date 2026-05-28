@@ -25,7 +25,7 @@ const GRADE_COLORS = {
 
 function gradeColor(g) {
   if (!g) return "var(--text-muted)";
-  return GRADE_COLORS[g.toUpperCase()] || "var(--primary-cyan)";
+  return GRADE_COLORS[g.toUpperCase()] || "var(--primary-green)";
 }
 
 function formatDate(d) {
@@ -167,7 +167,7 @@ export default function ReportCardsPage() {
             style={{ overflow: "hidden" }}>
             <div className="glass-panel" style={{
               marginBottom: 24, padding: "clamp(18px, 3vw, 26px)",
-              borderLeft: `3px solid ${editingId ? "var(--primary-purple)" : "var(--primary-cyan)"}`,
+              borderLeft: `3px solid ${editingId ? "var(--primary-green)" : "var(--primary-green)"}`,
             }}>
               <h3 style={{ fontWeight: 700, fontFamily: "'Plus Jakarta Sans',sans-serif", marginBottom: 16, fontSize: "1rem" }}>
                 {editingId ? "✏️ Edit Report Card" : "📄 New Report Card"}
@@ -224,7 +224,7 @@ export default function ReportCardsPage() {
                     <label htmlFor="report-file-upload" className="glass-panel" style={{
                       padding: "12px 24px", cursor: "pointer", display: "inline-flex",
                       alignItems: "center", gap: 8, fontSize: "0.85rem", fontWeight: 600,
-                      color: "var(--primary-cyan)", borderStyle: "dashed",
+                      color: "var(--primary-green)", borderStyle: "dashed",
                       transition: "all 0.2s",
                     }}>
                       📤 Choose Files
@@ -277,16 +277,16 @@ export default function ReportCardsPage() {
         <div style={{ display: "flex", gap: 8, marginBottom: 20, flexWrap: "wrap" }}>
           <button onClick={() => setFilter("All")} style={{
             padding: "7px 18px", borderRadius: 20, fontSize: "0.82rem", cursor: "pointer",
-            border: `1px solid ${filter === "All" ? "var(--primary-cyan)" : "var(--border-subtle)"}`,
-            background: filter === "All" ? "rgba(125,211,252,0.08)" : "transparent",
-            color: filter === "All" ? "var(--primary-cyan)" : "var(--text-muted)", fontWeight: filter === "All" ? 600 : 400,
+            border: `1px solid ${filter === "All" ? "var(--primary-green)" : "var(--border-subtle)"}`,
+            background: filter === "All" ? "rgba(57,255,20,0.08)" : "transparent",
+            color: filter === "All" ? "var(--primary-green)" : "var(--text-muted)", fontWeight: filter === "All" ? 600 : 400,
           }}>All</button>
           {subjects.map(s => (
             <button key={s} onClick={() => setFilter(s)} style={{
               padding: "7px 18px", borderRadius: 20, fontSize: "0.82rem", cursor: "pointer",
-              border: `1px solid ${filter === s ? "var(--primary-purple)" : "var(--border-subtle)"}`,
-              background: filter === s ? "rgba(192,132,252,0.08)" : "transparent",
-              color: filter === s ? "var(--primary-purple)" : "var(--text-muted)", fontWeight: filter === s ? 600 : 400,
+              border: `1px solid ${filter === s ? "var(--primary-green)" : "var(--border-subtle)"}`,
+              background: filter === s ? "rgba(57,255,20,0.08)" : "transparent",
+              color: filter === s ? "var(--primary-green)" : "var(--text-muted)", fontWeight: filter === s ? 600 : 400,
             }}>{s}</button>
           ))}
         </div>
@@ -412,8 +412,8 @@ export default function ReportCardsPage() {
                                     )}
                                     <button onClick={(e) => { e.stopPropagation(); downloadFile(f); }} style={{
                                       padding: "6px 14px", borderRadius: 10, fontSize: "0.78rem", fontWeight: 600,
-                                      background: "rgba(125,211,252,0.08)", border: "1px solid rgba(125,211,252,0.2)",
-                                      color: "var(--primary-cyan)", cursor: "pointer",
+                                      background: "rgba(57,255,20,0.08)", border: "1px solid rgba(57,255,20,0.2)",
+                                      color: "var(--primary-green)", cursor: "pointer",
                                     }}>⬇ Download</button>
                                   </div>
                                 ))}

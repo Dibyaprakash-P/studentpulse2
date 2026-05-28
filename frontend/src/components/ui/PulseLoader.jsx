@@ -1,5 +1,3 @@
-"use client";
-
 export default function PulseLoader({ size = 48, text = "Loading..." }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 16, padding: 48 }}>

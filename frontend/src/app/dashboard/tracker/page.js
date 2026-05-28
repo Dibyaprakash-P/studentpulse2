@@ -73,7 +73,7 @@ function TimeBudgetBar({ used, total }) {
           width: `${pct}%`, height: "100%", borderRadius: 8,
           background: overBudget
             ? "linear-gradient(90deg, var(--danger), #ff4466)"
-            : "linear-gradient(90deg, var(--success), var(--primary-cyan))",
+            : "linear-gradient(90deg, var(--success), var(--primary-green))",
           transition: "width 0.4s ease",
         }} />
       </div>
@@ -99,7 +99,7 @@ const OTHER_SLIDERS = [
   { label: "Stress Level", icon: "😰", name: "stress_level", min: 1, max: 10, step: 1, color: "#ef4444", unit: "/10" },
   { label: "Energy Level", icon: "⚡", name: "energy_level", min: 1, max: 10, step: 1, color: "#f97316", unit: "/10" },
   { label: "Water Intake", icon: "💧", name: "water_intake_glasses", min: 0, max: 15, step: 1, color: "#06b6d4", unit: " glasses" },
-  { label: "Social Interaction", icon: "👥", name: "social_interaction", min: 1, max: 10, step: 1, color: "#a855f7", unit: "/10" },
+  { label: "Social Interaction", icon: "👥", name: "social_interaction", min: 1, max: 10, step: 1, color: "#00E676", unit: "/10" },
 ];
 
 const STORAGE_KEY_HW = "sp_homework";

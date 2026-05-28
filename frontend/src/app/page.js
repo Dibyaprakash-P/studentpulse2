@@ -6,22 +6,18 @@ import { useEffect, useState } from "react";
 import { useTheme } from "@/lib/theme";
 
 const FEATURES = [
-  { icon: "📊", title: "Smart Dashboard", desc: "Real-time overview of your study habits, energy levels, and wellness metrics — all in one beautiful view." },
-  { icon: "🧠", title: "AI Burnout Detection", desc: "Our intelligent algorithm analyzes your daily inputs and predicts burnout risk before it hits." },
-  { icon: "📝", title: "Daily Tracker", desc: "Log sleep, study hours, stress, mood, hydration and more. Build healthy habits one day at a time." },
-  { icon: "📋", title: "Homework Manager", desc: "Track assignments with deadlines, priorities, and completion status. Never miss a due date." },
-  { icon: "🗒️", title: "Smart Notes", desc: "Color-coded, pinnable notes for lectures, study groups, and exam prep — all organized and searchable." },
-  { icon: "📁", title: "Project Tracker", desc: "Manage academic projects with progress tracking, tags, file attachments, and deadline alerts." },
-  { icon: "📈", title: "Productivity Analytics", desc: "Weekly insights, productivity scores, and consistency metrics to help you stay on track." },
-  { icon: "🏆", title: "Achievements & XP", desc: "Earn badges, build streaks, and level up as you maintain healthy habits. Gamified motivation!" },
-  { icon: "👨‍👩‍👦", title: "Parent Dashboard", desc: "Parents can monitor their child's wellbeing with linked accounts and real-time insights." },
+  { icon: "📊", title: "Smart Dashboard", desc: "Real-time overview of your study habits, energy levels, and wellness metrics — all in one beautiful view.", color: "#39FF14" },
+  { icon: "🧠", title: "AI Burnout Detection", desc: "Our intelligent algorithm analyzes your daily inputs and predicts burnout risk before it hits.", color: "#00E676" },
+  { icon: "📝", title: "Daily Tracker", desc: "Log sleep, study hours, stress, mood, hydration and more. Build healthy habits one day at a time.", color: "#76FF03" },
+  { icon: "📋", title: "Homework Manager", desc: "Track assignments with deadlines, priorities, and completion status. Never miss a due date.", color: "#00C853" },
+  { icon: "🗒️", title: "Smart Notes", desc: "Color-coded, pinnable notes for lectures, study groups, and exam prep — all organized and searchable.", color: "#B2FF59" },
+  { icon: "📁", title: "Project Tracker", desc: "Manage academic projects with progress tracking, tags, file attachments, and deadline alerts.", color: "#69F0AE" },
+  { icon: "📈", title: "Productivity Analytics", desc: "Weekly insights, productivity scores, and consistency metrics to help you stay on track.", color: "#A7FFEB" },
+  { icon: "🏆", title: "Achievements & XP", desc: "Earn badges, build streaks, and level up as you maintain healthy habits. Gamified motivation!", color: "#00E676" },
+  { icon: "👨‍👩‍👦", title: "Parent Dashboard", desc: "Parents can monitor their child's wellbeing with linked accounts and real-time insights.", color: "#39FF14" },
 ];
 
-const TEAM = [
-  { name: "Student Pulse Team", role: "Development", desc: "Built with ❤️ by students, for students." },
-];
-
-/* Frosted glass theme toggle button */
+/* Theme toggle button */
 function ThemeToggle({ theme, toggle }) {
   return (
     <motion.button
@@ -55,7 +51,7 @@ export default function Home() {
   return (
     <main style={{ minHeight: "100vh", overflow: "hidden", background: "var(--bg-primary)" }}>
 
-      {/* ═══ NAVBAR — Frosted Glass ═══ */}
+      {/* ═══ NAVBAR ═══ */}
       <nav style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
         background: "var(--bg-secondary)",
@@ -69,9 +65,9 @@ export default function Home() {
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{
               width: 34, height: 34, borderRadius: 10,
-              background: "linear-gradient(135deg, var(--primary-blue), var(--primary-purple))",
+              background: "linear-gradient(135deg, #39FF14, #00E676)",
               display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: "0 0 16px rgba(96, 165, 250, 0.2)",
+              boxShadow: "0 0 16px rgba(57, 255, 20, 0.3)",
             }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>
             </div>
@@ -79,12 +75,7 @@ export default function Home() {
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             <ThemeToggle theme={theme} toggle={toggle} />
-            <Link href="/login" style={{
-              padding: "9px 22px", borderRadius: 22, fontWeight: 700, fontSize: "0.8rem",
-              background: "linear-gradient(135deg, var(--primary-blue), var(--primary-cyan))",
-              color: "#000", textDecoration: "none", transition: "all 0.3s",
-              boxShadow: "0 0 16px rgba(96, 165, 250, 0.15)",
-            }}>
+            <Link href="/login" className="btn-primary" style={{ fontSize: "0.8rem", padding: "9px 22px" }}>
               Get Started
             </Link>
           </div>
@@ -98,9 +89,9 @@ export default function Home() {
         position: "relative", padding: "80px clamp(16px, 5vw, 40px) 40px",
       }}>
         {/* Ambient floating orbs */}
-        <div className="bg-blur-cyan" style={{ top: "10%", left: "5%", width: 280, height: 280 }} />
-        <div className="bg-blur-purple" style={{ bottom: "15%", right: "5%", width: 320, height: 320 }} />
-        <div className="bg-blur-cyan" style={{ top: "60%", right: "20%", width: 150, height: 150, opacity: 0.5 }} />
+        <div className="bg-blur-teal" style={{ top: "10%", left: "5%", width: 280, height: 280 }} />
+        <div className="bg-blur-lavender" style={{ bottom: "15%", right: "5%", width: 320, height: 320 }} />
+        <div className="bg-blur-coral" style={{ top: "60%", right: "20%", width: 150, height: 150, opacity: 0.5 }} />
 
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
           style={{ zIndex: 10, maxWidth: 680 }}>
@@ -109,13 +100,13 @@ export default function Home() {
           <div className="animate-float" style={{ display: "flex", justifyContent: "center", marginBottom: 28 }}>
             <div className="animate-pulse-glow" style={{
               width: 80, height: 80, borderRadius: "50%",
-              border: "1px solid rgba(125, 211, 252, 0.3)",
-              background: "rgba(125, 211, 252, 0.05)",
+              border: "1px solid rgba(57, 255, 20, 0.3)",
+              background: "rgba(57, 255, 20, 0.05)",
               backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
               display: "flex", alignItems: "center", justifyContent: "center",
             }}>
               <motion.div className="animate-heartbeat">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary-cyan)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary-teal)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                 </svg>
               </motion.div>
@@ -172,16 +163,16 @@ export default function Home() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 300px), 1fr))", gap: 20 }}>
           {FEATURES.map((f, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: i * 0.05 }}>
+              viewport={{ once: true }} transition={{ delay: i * 0.05, ease: [0.34, 1.56, 0.64, 1] }}>
               <div className="glass-panel" style={{
                 padding: "clamp(18px, 3vw, 26px)", height: "100%",
                 display: "flex", flexDirection: "column", gap: 14,
+                borderTop: `3px solid ${f.color}`,
               }}>
                 <div style={{
                   width: 48, height: 48, borderRadius: 14,
-                  background: "rgba(125, 211, 252, 0.06)",
-                  border: "1px solid rgba(125, 211, 252, 0.1)",
-                  backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
+                  background: `${f.color}12`,
+                  border: `1px solid ${f.color}22`,
                   display: "flex", alignItems: "center", justifyContent: "center",
                   fontSize: "1.4rem",
                 }}>
@@ -209,10 +200,10 @@ export default function Home() {
 
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           {[
-            { step: "1", icon: "📝", title: "Log Your Day", desc: "Track sleep, study, stress, mood, and more in under 60 seconds." },
-            { step: "2", icon: "🧠", title: "AI Analyzes", desc: "Our burnout algorithm processes your data and identifies risk factors." },
-            { step: "3", icon: "💡", title: "Get Insights", desc: "Receive personalized recommendations and track your progress over time." },
-            { step: "4", icon: "🏆", title: "Level Up", desc: "Earn badges, build streaks, and gamify your wellness journey." },
+            { step: "1", icon: "📝", title: "Log Your Day", desc: "Track sleep, study, stress, mood, and more in under 60 seconds.", color: "#39FF14" },
+            { step: "2", icon: "🧠", title: "AI Analyzes", desc: "Our burnout algorithm processes your data and identifies risk factors.", color: "#00E676" },
+            { step: "3", icon: "💡", title: "Get Insights", desc: "Receive personalized recommendations and track your progress over time.", color: "#76FF03" },
+            { step: "4", icon: "🏆", title: "Level Up", desc: "Earn badges, build streaks, and gamify your wellness journey.", color: "#00C853" },
           ].map((s, i) => (
             <motion.div key={i} initial={{ opacity: 0, x: i % 2 === 0 ? -16 : 16 }}
               whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
@@ -221,10 +212,10 @@ export default function Home() {
               }}>
                 <div style={{
                   width: 48, height: 48, borderRadius: "50%", flexShrink: 0,
-                  background: "linear-gradient(135deg, var(--primary-blue), var(--primary-purple))",
+                  background: `linear-gradient(135deg, ${s.color}, ${s.color}88)`,
                   display: "flex", alignItems: "center", justifyContent: "center",
                   color: "#fff", fontWeight: 800, fontSize: "1.1rem",
-                  boxShadow: "0 0 20px rgba(96, 165, 250, 0.15)",
+                  boxShadow: `0 0 20px ${s.color}25`,
                 }}>
                   {s.step}
                 </div>
@@ -261,18 +252,18 @@ export default function Home() {
             <div style={{
               display: "flex", flexDirection: "column", alignItems: "center", gap: 16,
               padding: "28px 32px", borderRadius: 20,
-              background: "rgba(125, 211, 252, 0.04)",
-              border: "1px solid rgba(125, 211, 252, 0.1)",
+              background: "rgba(57, 255, 20, 0.04)",
+              border: "1px solid rgba(57, 255, 20, 0.1)",
             }}>
-              <div style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--primary-cyan)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+              <div style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--primary-green)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
                 Creator & Developer
               </div>
               <div style={{
                 width: 72, height: 72, borderRadius: "50%",
-                background: "linear-gradient(135deg, var(--primary-blue), var(--primary-purple))",
+                background: "linear-gradient(135deg, #39FF14, #00E676)",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: "1.5rem", fontWeight: 800, color: "#fff",
-                boxShadow: "0 0 24px rgba(96, 165, 250, 0.2), 0 0 48px rgba(192, 132, 252, 0.1)",
+                fontSize: "1.5rem", fontWeight: 800, color: "#0a0a0a",
+                boxShadow: "0 0 24px rgba(57, 255, 20, 0.25), 0 0 48px rgba(0, 230, 118, 0.1)",
               }}>
                 DP
               </div>
@@ -281,13 +272,12 @@ export default function Home() {
                   Dibyaprakash Patnaik
                 </h3>
 
-
                 <a href="mailto:dibyaprakashpatnaik@gmail.com" style={{
                   display: "inline-flex", alignItems: "center", gap: 8,
                   padding: "8px 20px", borderRadius: 12,
                   background: "rgba(255,255,255,0.04)",
                   border: "1px solid var(--border-subtle)",
-                  color: "var(--primary-cyan)", fontSize: "0.82rem", fontWeight: 600,
+                  color: "var(--primary-green)", fontSize: "0.82rem", fontWeight: 600,
                   textDecoration: "none", transition: "all 0.2s",
                 }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

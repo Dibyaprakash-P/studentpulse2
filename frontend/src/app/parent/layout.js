@@ -75,9 +75,9 @@ export default function ParentDashboardLayout({ children }) {
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{
               width: 34, height: 34, borderRadius: 10,
-              background: "linear-gradient(135deg, var(--primary-purple), var(--primary-blue))",
+              background: "linear-gradient(135deg, var(--primary-green), var(--primary-green-deep))",
               display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: "0 0 16px rgba(192, 132, 252, 0.2)",
+              boxShadow: "0 0 16px rgba(57, 255, 20, 0.3)",
             }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>
             </div>
@@ -113,7 +113,7 @@ export default function ParentDashboardLayout({ children }) {
           <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 4px" }}>
             <div style={{
               width: 36, height: 36, borderRadius: 10,
-              background: "linear-gradient(135deg, var(--primary-purple), var(--primary-blue))",
+              background: "linear-gradient(135deg, var(--primary-green), var(--primary-green-deep))",
               display: "flex", alignItems: "center", justifyContent: "center",
               color: "white", fontWeight: 700, fontSize: "0.75rem",
             }}>{initials}</div>
@@ -178,8 +178,8 @@ export default function ParentDashboardLayout({ children }) {
           <h2 style={{ fontSize: "1.15rem", fontWeight: 800, fontFamily: "'Plus Jakarta Sans',sans-serif" }}>{pageTitle}</h2>
           <div style={{
             padding: "5px 14px", borderRadius: 10, fontSize: "0.78rem", fontWeight: 600,
-            background: "rgba(192,132,252,0.08)", border: "1px solid rgba(192,132,252,0.2)",
-            color: "var(--primary-purple)", display: "flex", alignItems: "center", gap: 6,
+            background: "rgba(57,255,20,0.08)", border: "1px solid rgba(57,255,20,0.2)",
+            color: "var(--primary-green)", display: "flex", alignItems: "center", gap: 6,
           }}>
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--success)", display: "inline-block" }} />
             Monitoring Active

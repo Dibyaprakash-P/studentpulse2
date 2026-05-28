@@ -71,7 +71,7 @@ export default function ParentDashboardHome() {
       </div>
 
       {/* Link Code Generator */}
-      <div className="glass-panel" style={{ padding: "clamp(18px, 3vw, 24px)", borderLeft: "3px solid var(--primary-purple)" }}>
+      <div className="glass-panel" style={{ padding: "clamp(18px, 3vw, 24px)", borderLeft: "3px solid var(--primary-lavender)" }}>
         <h3 style={{ fontSize: "1.05rem", fontWeight: 700, marginBottom: 8 }}>🔗 Link a Student</h3>
         <p style={{ color: "var(--text-muted)", fontSize: "0.82rem", marginBottom: 14 }}>
           Generate a code and share it with your student to link accounts.
@@ -79,7 +79,7 @@ export default function ParentDashboardHome() {
         <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
           <NeonButton variant="purple" onClick={handleGenCode}>Generate Link Code</NeonButton>
           {linkCode && (
-            <div style={{ padding: "8px 20px", background: "rgba(192,132,252,0.08)", border: "1px solid rgba(192,132,252,0.25)", borderRadius: 12, fontFamily: "monospace", fontSize: "1.25rem", fontWeight: 700, color: "var(--primary-purple)", letterSpacing: "0.1em" }}>
+            <div style={{ padding: "8px 20px", background: "rgba(167,139,250,0.08)", border: "1px solid rgba(167,139,250,0.25)", borderRadius: 12, fontFamily: "monospace", fontSize: "1.25rem", fontWeight: 700, color: "var(--primary-lavender)", letterSpacing: "0.1em" }}>
               {linkCode}
             </div>
           )}
@@ -102,7 +102,7 @@ export default function ParentDashboardHome() {
         </GlassCard>
         <GlassCard>
           <span style={{ color: "var(--text-muted)", fontSize: "0.78rem", marginBottom: 8, display: "block", fontWeight: 500 }}>Active Projects</span>
-          <span style={{ fontSize: "2rem", fontWeight: 800, color: "var(--primary-cyan)" }}>{activeProjects.length}</span>
+          <span style={{ fontSize: "2rem", fontWeight: 800, color: "var(--primary-teal)" }}>{activeProjects.length}</span>
         </GlassCard>
         <GlassCard>
           <span style={{ color: "var(--text-muted)", fontSize: "0.78rem", marginBottom: 8, display: "block", fontWeight: 500 }}>Avg Project Progress</span>
@@ -174,7 +174,7 @@ export default function ParentDashboardHome() {
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {projects.map(p => {
               const { diffMs, diffDays } = timeUntil(p.deadline);
-              const statusCol = p.status === "Completed" ? "var(--success)" : p.status === "In Progress" ? "var(--primary-cyan)" : "var(--warning)";
+              const statusCol = p.status === "Completed" ? "var(--success)" : p.status === "In Progress" ? "var(--primary-green)" : "var(--warning)";
               return (
                 <div key={p.id} style={{
                   padding: "14px 16px", borderRadius: 14,
@@ -197,10 +197,10 @@ export default function ParentDashboardHome() {
                   <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                     <div style={{ flex: 1 }}>
                       <div style={{ height: 5, borderRadius: 5, background: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
-                        <div style={{ width: `${p.progress || 0}%`, height: "100%", borderRadius: 5, background: "linear-gradient(90deg, var(--primary-cyan), var(--primary-purple))", transition: "width 0.5s ease" }} />
+                        <div style={{ width: `${p.progress || 0}%`, height: "100%", borderRadius: 5, background: "linear-gradient(90deg, var(--primary-teal), var(--primary-lavender))", transition: "width 0.5s ease" }} />
                       </div>
                     </div>
-                    <span style={{ fontSize: "0.78rem", fontWeight: 700, color: "var(--primary-cyan)", minWidth: 40, textAlign: "right" }}>{p.progress || 0}%</span>
+                    <span style={{ fontSize: "0.78rem", fontWeight: 700, color: "var(--primary-teal)", minWidth: 40, textAlign: "right" }}>{p.progress || 0}%</span>
                   </div>
                 </div>
               );
@@ -222,7 +222,7 @@ export default function ParentDashboardHome() {
               }}>
                 <div style={{
                   width: 44, height: 44, borderRadius: 12,
-                  background: "linear-gradient(135deg, var(--primary-blue), var(--primary-purple))",
+                  background: "linear-gradient(135deg, var(--primary-teal), var(--primary-lavender))",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   fontWeight: 700, color: "white", fontSize: "0.8rem",
                 }}>

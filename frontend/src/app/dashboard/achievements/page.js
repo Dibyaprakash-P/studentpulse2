@@ -44,7 +44,7 @@ export default function Achievements() {
           <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
             <div style={{
               width: 96, height: 96, borderRadius: "50%", background: "#000",
-              border: "4px solid var(--primary-cyan)", display: "flex", alignItems: "center",
+              border: "4px solid var(--primary-green)", display: "flex", alignItems: "center",
               justifyContent: "center", boxShadow: "0 0 20px rgba(0,255,229,0.5)",
             }}>
               <span className="text-glow-cyan" style={{ fontSize: "2.25rem", fontWeight: 700 }}>L{level}</span>
@@ -60,8 +60,8 @@ export default function Achievements() {
 
           <div style={{ flex: 1, maxWidth: 400, minWidth: 200 }}>
             <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.875rem", marginBottom: 8, fontWeight: 700 }}>
-              <span style={{ color: "var(--primary-cyan)" }}>LVL {level}</span>
-              <span style={{ color: "var(--primary-purple)" }}>LVL {level + 1}</span>
+              <span style={{ color: "var(--primary-green)" }}>LVL {level}</span>
+              <span style={{ color: "var(--primary-green)" }}>LVL {level + 1}</span>
             </div>
             <div className="progress-bar-track">
               <motion.div className="progress-bar-fill"

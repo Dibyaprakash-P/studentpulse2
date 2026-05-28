@@ -155,7 +155,7 @@ export default function LoginRegister() {
     setError("");
     setLoading(true);
 
-    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
     if (!clientId || clientId === "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com") {
       setError("Google Sign-In is not configured yet.");
       setLoading(false);
@@ -290,12 +290,12 @@ export default function LoginRegister() {
           <div style={{ display: "flex", justifyContent: "center", marginBottom: 14 }}>
             <div className="animate-pulse-glow" style={{
               width: 52, height: 52, borderRadius: "50%",
-              border: "1px solid rgba(125, 211, 252, 0.25)",
-              background: "rgba(125, 211, 252, 0.05)",
+              border: "1px solid rgba(57, 255, 20, 0.25)",
+              background: "rgba(57, 255, 20, 0.05)",
               backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
               display: "flex", alignItems: "center", justifyContent: "center",
             }}>
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--primary-cyan)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--primary-green)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>
             </div>
           </div>
           <h1 style={{ fontSize: "1.5rem", fontWeight: 800, fontFamily: "'Plus Jakarta Sans',sans-serif", marginBottom: 4, letterSpacing: "-0.02em" }}>
@@ -329,7 +329,7 @@ export default function LoginRegister() {
           transition: "all 0.2s",
           marginBottom: 18,
         }}
-          onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; e.currentTarget.style.borderColor = "rgba(125,211,252,0.3)"; }}
+          onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; e.currentTarget.style.borderColor = "rgba(57,255,20,0.3)"; }}
           onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; e.currentTarget.style.borderColor = "var(--border-subtle)"; }}
         >
           <GoogleIcon />
@@ -414,9 +414,9 @@ export default function LoginRegister() {
                     <button key={r.value} type="button" onClick={() => setRole(r.value)}
                       style={{
                         flex: 1, padding: "11px 14px", borderRadius: 12, cursor: "pointer",
-                        border: `1px solid ${role === r.value ? "var(--primary-cyan)" : "var(--border-subtle)"}`,
-                        background: role === r.value ? "rgba(125,211,252,0.08)" : "transparent",
-                        color: role === r.value ? "var(--primary-cyan)" : "var(--text-muted)",
+                        border: `1px solid ${role === r.value ? "var(--primary-green)" : "var(--border-subtle)"}`,
+                        background: role === r.value ? "rgba(57,255,20,0.08)" : "transparent",
+                        color: role === r.value ? "var(--primary-green)" : "var(--text-muted)",
                         fontWeight: role === r.value ? 700 : 500, fontSize: "0.88rem",
                         display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                         transition: "all 0.2s",
@@ -470,9 +470,9 @@ export default function LoginRegister() {
                     <button key={r} type="button" onClick={() => setRelation(r)}
                       style={{
                         flex: 1, padding: "10px 8px", borderRadius: 10, cursor: "pointer",
-                        border: `1px solid ${relation === r ? "var(--primary-purple)" : "var(--border-subtle)"}`,
-                        background: relation === r ? "rgba(192,132,252,0.08)" : "transparent",
-                        color: relation === r ? "var(--primary-purple)" : "var(--text-muted)",
+                        border: `1px solid ${relation === r ? "var(--primary-green)" : "var(--border-subtle)"}`,
+                        background: relation === r ? "rgba(57,255,20,0.08)" : "transparent",
+                        color: relation === r ? "var(--primary-green)" : "var(--text-muted)",
                         fontWeight: relation === r ? 700 : 500, fontSize: "0.82rem",
                         transition: "all 0.2s",
                       }}>
@@ -493,7 +493,7 @@ export default function LoginRegister() {
           <p style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
             {isLogin ? "Don't have an account?" : "Already have an account?"}
             <button onClick={switchMode}
-              style={{ marginLeft: 8, fontWeight: 700, color: "var(--primary-cyan)", background: "none", border: "none", cursor: "pointer" }}>
+              style={{ marginLeft: 8, fontWeight: 700, color: "var(--primary-green)", background: "none", border: "none", cursor: "pointer" }}>
               {isLogin ? "Sign Up" : "Log In"}
             </button>
           </p>

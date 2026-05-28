@@ -23,7 +23,7 @@ const TECH_STACK = [
   { name: "Next.js 16", icon: "▲", color: "#fff" },
   { name: "React 19", icon: "⚛️", color: "#61dafb" },
   { name: "Firebase", icon: "🔥", color: "#ffca28" },
-  { name: "Framer Motion", icon: "🎬", color: "#c084fc" },
+  { name: "Framer Motion", icon: "🎬", color: "#39FF14" },
   { name: "Recharts", icon: "📊", color: "#38bdf8" },
   { name: "Netlify", icon: "🌐", color: "#4ade80" },
 ];
@@ -52,7 +52,7 @@ export default function AboutPage() {
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
             <div style={{
               width: 44, height: 44, borderRadius: 14,
-              background: "linear-gradient(135deg, var(--primary-blue), var(--primary-purple))",
+              background: "linear-gradient(135deg, var(--primary-green-deep), var(--primary-green))",
               display: "flex", alignItems: "center", justifyContent: "center",
               boxShadow: "0 0 20px rgba(96, 165, 250, 0.2)",
             }}>
@@ -67,7 +67,7 @@ export default function AboutPage() {
           <p style={{ color: "var(--text-secondary)", lineHeight: 1.8, fontSize: "0.92rem", marginTop: 12 }}>
             We built this platform to give every student a personal wellness companion — one that uses 
             AI to detect burnout patterns, provides actionable insights, and gamifies the journey to 
-            better health. <strong style={{ color: "var(--primary-cyan)" }}>Our mission is to help students thrive, not just survive.</strong>
+            better health. <strong style={{ color: "var(--primary-green)" }}>Our mission is to help students thrive, not just survive.</strong>
           </p>
         </div>
       </GlassCard>
@@ -119,15 +119,15 @@ export default function AboutPage() {
 
       {/* Creator Card */}
       <GlassCard delay={0.4} style={{ padding: "clamp(24px, 4vw, 36px)", marginBottom: 24, textAlign: "center" }}>
-        <div style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--primary-cyan)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>
+        <div style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--primary-green)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>
           Creator & Developer
         </div>
         <div style={{
           width: 80, height: 80, borderRadius: "50%", margin: "0 auto 16px",
-          background: "linear-gradient(135deg, var(--primary-blue), var(--primary-purple))",
+          background: "linear-gradient(135deg, var(--primary-green-deep), var(--primary-green))",
           display: "flex", alignItems: "center", justifyContent: "center",
           fontSize: "1.6rem", fontWeight: 800, color: "#fff",
-          boxShadow: "0 0 24px rgba(96, 165, 250, 0.2), 0 0 48px rgba(192, 132, 252, 0.1)",
+          boxShadow: "0 0 24px rgba(57, 255, 20, 0.25), 0 0 48px rgba(0, 230, 118, 0.1)",
         }}>
           DP
         </div>
@@ -140,9 +140,9 @@ export default function AboutPage() {
         <a href="mailto:dibyaprakashpatnaik@gmail.com" style={{
           display: "inline-flex", alignItems: "center", gap: 8,
           padding: "10px 24px", borderRadius: 14,
-          background: "rgba(125,211,252,0.06)",
-          border: "1px solid rgba(125,211,252,0.15)",
-          color: "var(--primary-cyan)", fontSize: "0.85rem", fontWeight: 600,
+          background: "rgba(57,255,20,0.06)",
+          border: "1px solid rgba(57,255,20,0.15)",
+          color: "var(--primary-green)", fontSize: "0.85rem", fontWeight: 600,
           textDecoration: "none", transition: "all 0.2s",
         }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -157,7 +157,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 md-grid-cols-3" style={{ gap: 16 }}>
           <div style={{ textAlign: "center", padding: "12px 0" }}>
             <div style={{ fontSize: "0.72rem", fontWeight: 600, color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6 }}>Version</div>
-            <div style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--primary-cyan)" }}>2.0.0</div>
+            <div style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--primary-green)" }}>2.0.0</div>
           </div>
           <div style={{ textAlign: "center", padding: "12px 0", borderLeft: "1px solid var(--border-subtle)", borderRight: "1px solid var(--border-subtle)" }}>
             <div style={{ fontSize: "0.72rem", fontWeight: 600, color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6 }}>Data Storage</div>
@@ -165,7 +165,7 @@ export default function AboutPage() {
           </div>
           <div style={{ textAlign: "center", padding: "12px 0" }}>
             <div style={{ fontSize: "0.72rem", fontWeight: 600, color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6 }}>Platform</div>
-            <div style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--primary-purple)" }}>Web + Mobile</div>
+            <div style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--primary-green)" }}>Web + Mobile</div>
           </div>
         </div>
       </GlassCard>

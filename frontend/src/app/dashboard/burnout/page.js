@@ -13,7 +13,7 @@ export default function BurnoutAnalytics() {
   const p = prediction || {};
   const burnoutPct = p.burnout_percentage ?? 0;
   const riskLevel = p.risk_level ?? "unknown";
-  const riskColor = riskLevel === "high" ? "var(--danger)" : riskLevel === "moderate" ? "var(--warning)" : "var(--primary-cyan)";
+  const riskColor = riskLevel === "high" ? "var(--danger)" : riskLevel === "moderate" ? "var(--warning)" : "var(--primary-teal)";
   const factors = p.contributing_factors || [];
   const recs = p.recommendations || [];
 
@@ -27,7 +27,7 @@ export default function BurnoutAnalytics() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
       <div style={{ marginBottom: 8 }}>
-        <h2 style={{ fontSize: "1.875rem", fontWeight: 700, fontFamily: "'Outfit',sans-serif", marginBottom: 8 }}>Burnout Analytics</h2>
+        <h2 style={{ fontSize: "1.875rem", fontWeight: 700, fontFamily: "'Plus Jakarta Sans',sans-serif", marginBottom: 8, letterSpacing: "-0.02em" }}>Burnout Analytics</h2>
         <p style={{ color: "var(--text-muted)" }}>Deep dive into your mental fatigue and stress patterns.</p>
       </div>
 
@@ -51,7 +51,7 @@ export default function BurnoutAnalytics() {
               <h3 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: 8 }}>
                 Status: <span style={{ color: riskColor, textTransform: "capitalize" }}>{riskLevel} Risk</span>
               </h3>
-              <p style={{ color: "#d1d5db", lineHeight: 1.6 }}>
+              <p style={{ color: "var(--text-secondary)", lineHeight: 1.6 }}>
                 {riskLevel === "high" ? "Your burnout indicators are elevated. Consider reducing workload and prioritizing rest."
                   : riskLevel === "moderate" ? "Some stress indicators are above normal. Monitor your habits closely."
                   : burnoutPct > 0 ? "Your current lifestyle balance is healthy. Keep maintaining your routine."
@@ -78,27 +78,27 @@ export default function BurnoutAnalytics() {
       {/* Charts */}
       <div className="grid grid-cols-1 lg-grid-cols-2" style={{ gap: 24 }}>
         <GlassCard delay={0.2} style={{ height: 350, display: "flex", flexDirection: "column" }}>
-          <h3 style={{ fontSize: "1.125rem", fontWeight: 700, marginBottom: 16, fontFamily: "'Outfit',sans-serif" }}>Energy vs. Stress</h3>
+          <h3 style={{ fontSize: "1.125rem", fontWeight: 700, marginBottom: 16, fontFamily: "'Plus Jakarta Sans',sans-serif" }}>Energy vs. Stress</h3>
           <div style={{ flex: 1, width: "100%", minHeight: 0 }}>
             {dailyData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={dailyData} margin={{ top: 10, right: 20, left: 0, bottom: 5 }}>
                   <defs>
                     <linearGradient id="bEnergy" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.4} />
-                      <stop offset="95%" stopColor="#38bdf8" stopOpacity={0.02} />
+                      <stop offset="5%" stopColor="#14b8a6" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="#14b8a6" stopOpacity={0.02} />
                     </linearGradient>
                     <linearGradient id="bStress" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#fb7185" stopOpacity={0.4} />
-                      <stop offset="95%" stopColor="#fb7185" stopOpacity={0.02} />
+                      <stop offset="5%" stopColor="#f97316" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="#f97316" stopOpacity={0.02} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" vertical={false} />
                   <XAxis dataKey="time" stroke="rgba(128,128,128,0.3)" tick={{ fill: "#94a3b8", fontSize: 12 }} tickLine={false} dy={6} />
                   <YAxis domain={[0, 10]} stroke="rgba(128,128,128,0.3)" tick={{ fill: "#94a3b8", fontSize: 11 }} tickLine={false} />
                   <Tooltip contentStyle={{ backgroundColor: "rgba(20,20,30,0.9)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, fontSize: 13 }} />
-                  <Area type="monotone" dataKey="energy" stroke="#38bdf8" strokeWidth={2.5} fill="url(#bEnergy)" dot={{ r: 4, fill: "#38bdf8", strokeWidth: 2, stroke: "#fff" }} activeDot={{ r: 6 }} name="Energy" />
-                  <Area type="monotone" dataKey="stress" stroke="#fb7185" strokeWidth={2.5} fill="url(#bStress)" dot={{ r: 4, fill: "#fb7185", strokeWidth: 2, stroke: "#fff" }} activeDot={{ r: 6 }} name="Stress" />
+                  <Area type="monotone" dataKey="energy" stroke="#14b8a6" strokeWidth={2.5} fill="url(#bEnergy)" dot={{ r: 4, fill: "#14b8a6", strokeWidth: 2, stroke: "#fff" }} activeDot={{ r: 6 }} name="Energy" />
+                  <Area type="monotone" dataKey="stress" stroke="#f97316" strokeWidth={2.5} fill="url(#bStress)" dot={{ r: 4, fill: "#f97316", strokeWidth: 2, stroke: "#fff" }} activeDot={{ r: 6 }} name="Stress" />
                 </AreaChart>
               </ResponsiveContainer>
             ) : (
@@ -111,7 +111,7 @@ export default function BurnoutAnalytics() {
         </GlassCard>
 
         <GlassCard delay={0.3} style={{ display: "flex", flexDirection: "column" }}>
-          <h3 style={{ fontSize: "1.125rem", fontWeight: 700, marginBottom: 16, fontFamily: "'Outfit',sans-serif" }}>AI Recommendations</h3>
+          <h3 style={{ fontSize: "1.125rem", fontWeight: 700, marginBottom: 16, fontFamily: "'Plus Jakarta Sans',sans-serif" }}>AI Recommendations</h3>
           <ul style={{ display: "flex", flexDirection: "column", gap: 12, flex: 1 }}>
             {recs.length > 0 ? recs.map((r, i) => (
               <li key={i} style={{
@@ -120,7 +120,7 @@ export default function BurnoutAnalytics() {
                 border: "1px solid var(--border-subtle)", transition: "border-color 0.3s",
               }}>
                 <span style={{ fontSize: "1.5rem", marginTop: 2 }}>{r.icon}</span>
-                <p style={{ fontSize: "0.875rem", color: "#d1d5db" }}>{r.text}</p>
+                <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>{r.text}</p>
               </li>
             )) : (
               <li style={{ color: "var(--text-muted)", padding: 16, textAlign: "center" }}>

@@ -1,17 +1,36 @@
 "use client";
 
 import GlassCard from "@/components/ui/GlassCard";
+import MetricCard from "@/components/ui/MetricCard";
+import ProgressRing from "@/components/ui/ProgressRing";
 import PulseLoader from "@/components/ui/PulseLoader";
 import { useDashboard } from "@/hooks/useDashboard";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, RadialBarChart, RadialBar, Cell, LabelList } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Cell, LabelList, Tooltip } from "recharts";
 
-const BAR_COLORS = ["#3b82f6", "#8b5cf6", "#06b6d4", "#10b981", "#f59e0b", "#ec4899", "#f97316"];
+const CHART_COLORS = ["var(--chart-1)", "var(--chart-2)", "var(--chart-3)", "var(--chart-4)", "var(--chart-5)", "var(--chart-6)", "var(--chart-7)"];
+const CHART_HEX = ["#39FF14", "#00E676", "#76FF03", "#00C853", "#B2FF59", "#69F0AE", "#A7FFEB"];
 
 function ScoreLabel({ x, y, width, value }) {
   return (
-    <text x={x + width / 2} y={y - 8} textAnchor="middle" fill="#334155" fontSize={12} fontWeight={700}>
+    <text x={x + width / 2} y={y - 8} textAnchor="middle" fill="var(--text-secondary)" fontSize={12} fontWeight={700}>
       {value}
     </text>
+  );
+}
+
+function CustomTooltip({ active, payload, label }) {
+  if (!active || !payload?.length) return null;
+  return (
+    <div style={{
+      background: "rgba(10, 20, 40, 0.95)", border: "1px solid rgba(255,255,255,0.1)",
+      borderRadius: 12, padding: "10px 14px", fontSize: "0.82rem",
+      boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
+    }}>
+      <p style={{ color: "var(--text-muted)", marginBottom: 4 }}>{label}</p>
+      {payload.map((p, i) => (
+        <p key={i} style={{ color: p.color, fontWeight: 700 }}>{p.name}: {p.value}</p>
+      ))}
+    </div>
   );
 }
 
@@ -24,14 +43,13 @@ export default function DashboardHome() {
   const p = prediction || {};
   const burnoutPct = p.burnout_percentage ?? 0;
   const riskLevel = p.risk_level ?? "unknown";
-  const riskColor = riskLevel === "high" ? "var(--danger)" : riskLevel === "moderate" ? "var(--warning)" : "var(--primary-cyan)";
+  const riskColor = riskLevel === "high" ? "var(--danger)" : riskLevel === "moderate" ? "var(--warning)" : "var(--primary-green)";
+  const riskColorHex = riskLevel === "high" ? "#fb7185" : riskLevel === "moderate" ? "#fbbf24" : "#39FF14";
 
   const dailyData = (w.daily_data || []).map(d => ({
     day: d.date?.slice(5) || "",
     score: Math.round(d.productivity || 0),
   }));
-
-  const burnoutData = [{ name: "Risk", value: burnoutPct, fill: riskColor }];
 
   const topRec = p.recommendations?.[0];
 
@@ -39,9 +57,15 @@ export default function DashboardHome() {
     <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
 
       {/* AI Recommendation */}
-      <GlassCard delay={0} style={{ borderLeft: "3px solid var(--primary-cyan)" }}>
+      <GlassCard delay={0} accentColor="var(--primary-teal)" accentTop>
         <div style={{ display: "flex", alignItems: "flex-start", gap: 16 }}>
-          <div style={{ fontSize: "2.25rem", marginTop: 4 }}>🤖</div>
+          <div style={{
+            fontSize: "2rem", marginTop: 4,
+            width: 48, height: 48, borderRadius: 14,
+            background: "rgba(57, 255, 20, 0.08)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            flexShrink: 0,
+          }}>🤖</div>
           <div>
             <h3 style={{ fontSize: "1.125rem", fontWeight: 700, marginBottom: 6 }}>Pulse AI Insight</h3>
             <p style={{ color: "var(--text-secondary)", lineHeight: 1.6 }}>
@@ -53,36 +77,45 @@ export default function DashboardHome() {
         </div>
       </GlassCard>
 
-      {/* Stats Row */}
-      <div className="grid grid-cols-1 md-grid-cols-2 lg-grid-cols-4" style={{ gap: 24 }}>
-        <GlassCard delay={0.02}>
-          <span style={{ color: "var(--text-muted)", fontSize: "0.82rem", marginBottom: 10, display: "block", fontWeight: 500 }}>Current Burnout Risk</span>
-          <div style={{ display: "flex", alignItems: "flex-end", gap: 8 }}>
-            <span className="text-glow-cyan" style={{ fontSize: "2.25rem", fontWeight: 800 }}>{burnoutPct}%</span>
-            <span style={{ fontSize: "0.82rem", color: riskColor, marginBottom: 5, textTransform: "capitalize", fontWeight: 600 }}>{riskLevel}</span>
-          </div>
-        </GlassCard>
-        <GlassCard delay={0.04}>
-          <span style={{ color: "var(--text-muted)", fontSize: "0.82rem", marginBottom: 10, display: "block", fontWeight: 500 }}>Avg Sleep (Week)</span>
-          <div style={{ display: "flex", alignItems: "flex-end", gap: 8 }}>
-            <span style={{ fontSize: "2.25rem", fontWeight: 800 }}>{w.avg_sleep || 0}</span>
-            <span style={{ fontSize: "0.82rem", color: "var(--text-muted)", marginBottom: 5 }}>hours</span>
-          </div>
-        </GlassCard>
-        <GlassCard delay={0.06}>
-          <span style={{ color: "var(--text-muted)", fontSize: "0.82rem", marginBottom: 10, display: "block", fontWeight: 500 }}>Avg Study (Week)</span>
-          <div style={{ display: "flex", alignItems: "flex-end", gap: 8 }}>
-            <span style={{ fontSize: "2.25rem", fontWeight: 800 }}>{w.avg_study || 0}</span>
-            <span style={{ fontSize: "0.82rem", color: "var(--text-muted)", marginBottom: 5 }}>hours</span>
-          </div>
-        </GlassCard>
-        <GlassCard delay={0.08}>
-          <span style={{ color: "var(--text-muted)", fontSize: "0.82rem", marginBottom: 10, display: "block", fontWeight: 500 }}>Productivity Score</span>
-          <div style={{ display: "flex", alignItems: "flex-end", gap: 8 }}>
-            <span className="text-glow-purple" style={{ fontSize: "2.25rem", fontWeight: 800 }}>{Math.round(w.productivity_score || 0)}</span>
-            <span style={{ fontSize: "0.82rem", color: "var(--primary-purple)", marginBottom: 5, fontWeight: 600 }}>/ 100</span>
-          </div>
-        </GlassCard>
+      {/* Stats Row — MetricCards with animated counters */}
+      <div className="grid grid-cols-1 md-grid-cols-2 lg-grid-cols-4" style={{ gap: 20 }}>
+        <MetricCard
+          label="Current Burnout Risk"
+          value={burnoutPct}
+          suffix="%"
+          icon="🧠"
+          accentColor={riskColorHex}
+          delay={0.02}
+          trendLabel={riskLevel !== "unknown" ? riskLevel : ""}
+        />
+        <MetricCard
+          label="Avg Sleep (Week)"
+          value={w.avg_sleep || 0}
+          suffix=""
+          icon="😴"
+          accentColor="#39FF14"
+          delay={0.04}
+          trendLabel="hours"
+          decimals={1}
+        />
+        <MetricCard
+          label="Avg Study (Week)"
+          value={w.avg_study || 0}
+          suffix=""
+          icon="📚"
+          accentColor="#39FF14"
+          delay={0.06}
+          trendLabel="hours"
+          decimals={1}
+        />
+        <MetricCard
+          label="Productivity Score"
+          value={Math.round(w.productivity_score || 0)}
+          suffix="/100"
+          icon="⚡"
+          accentColor="#00E676"
+          delay={0.08}
+        />
       </div>
 
       {/* Charts Row */}
@@ -94,45 +127,44 @@ export default function DashboardHome() {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={dailyData} margin={{ top: 24, right: 30, left: 0, bottom: 5 }}>
                   <defs>
-                    {BAR_COLORS.map((color, i) => (
+                    {CHART_HEX.map((color, i) => (
                       <linearGradient key={i} id={`ovBarGrad${i}`} x1="0" y1="0" x2="0" y2="1">
                         <stop offset="0%" stopColor={color} stopOpacity={1} />
-                        <stop offset="100%" stopColor={color} stopOpacity={0.6} />
+                        <stop offset="100%" stopColor={color} stopOpacity={0.5} />
                       </linearGradient>
                     ))}
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.15)" />
-                  <XAxis dataKey="day" stroke="rgba(128,128,128,0.3)" tick={{ fill: "#64748b", fontSize: 13, fontWeight: 600 }} tickLine={false} dy={6} />
-                  <YAxis domain={[0, 100]} stroke="rgba(128,128,128,0.3)" tick={{ fill: "#94a3b8", fontSize: 11 }} tickLine={false} />
-                  <Bar dataKey="score" radius={[6, 6, 0, 0]} maxBarSize={50}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,0.1)" vertical={false} />
+                  <XAxis dataKey="day" stroke="rgba(128,128,128,0.2)" tick={{ fill: "var(--text-muted)", fontSize: 12, fontWeight: 600 }} tickLine={false} dy={6} />
+                  <YAxis domain={[0, 100]} stroke="rgba(128,128,128,0.2)" tick={{ fill: "var(--text-dim)", fontSize: 11 }} tickLine={false} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Bar dataKey="score" radius={[8, 8, 0, 0]} maxBarSize={48} name="Score">
                     <LabelList dataKey="score" content={ScoreLabel} />
                     {dailyData.map((entry, i) => (
-                      <Cell key={i} fill={`url(#ovBarGrad${i % BAR_COLORS.length})`} />
+                      <Cell key={i} fill={`url(#ovBarGrad${i % CHART_HEX.length})`} />
                     ))}
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
             ) : (
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "var(--text-muted)" }}>
-                Log activities to see your productivity trend
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "var(--text-muted)", flexDirection: "column", gap: 12 }}>
+                <span style={{ fontSize: "2.5rem" }}>📊</span>
+                <span>Log activities to see your productivity trend</span>
               </div>
             )}
           </div>
         </GlassCard>
 
-        <GlassCard delay={0.04} style={{ display: "flex", flexDirection: "column", height: "100%", alignItems: "center", justifyContent: "center", position: "relative" }}>
-          <h3 style={{ fontSize: "1.1rem", fontWeight: 700, position: "absolute", top: 24, left: 24, fontFamily: "'Plus Jakarta Sans',sans-serif" }}>Burnout Meter</h3>
-          <div style={{ width: "100%", height: "100%", maxHeight: 250, marginTop: 32, display: "flex", justifyContent: "center", alignItems: "center", position: "relative" }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <RadialBarChart cx="50%" cy="50%" innerRadius="70%" outerRadius="100%" barSize={20} data={burnoutData} startAngle={180} endAngle={0}>
-                <RadialBar minAngle={15} background={{ fill: "rgba(255,255,255,0.04)" }} clockWise dataKey="value" cornerRadius={10} />
-              </RadialBarChart>
-            </ResponsiveContainer>
-            <div style={{ position: "absolute", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", marginTop: 32 }}>
-              <span style={{ fontSize: "2.25rem", fontWeight: 800 }}>{burnoutPct}%</span>
-              <span style={{ fontSize: "0.82rem", color: riskColor, textTransform: "capitalize", fontWeight: 600 }}>{riskLevel} Risk</span>
-            </div>
-          </div>
+        <GlassCard delay={0.04} style={{ display: "flex", flexDirection: "column", height: "100%", alignItems: "center", justifyContent: "center" }}>
+          <h3 style={{ fontSize: "1.1rem", fontWeight: 700, fontFamily: "'Plus Jakarta Sans',sans-serif", alignSelf: "flex-start", marginBottom: 16 }}>Burnout Meter</h3>
+          <ProgressRing
+            value={burnoutPct}
+            size={180}
+            strokeWidth={14}
+            color={riskColorHex}
+            label={`${riskLevel} Risk`}
+            sublabel="Based on weekly data"
+          />
         </GlassCard>
       </div>
     </div>
