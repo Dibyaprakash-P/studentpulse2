@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
-import StarBackground from '@/components/ui/StarBackground';
 import SplashScreen from '@/components/ui/SplashScreen';
 
 // Layouts
@@ -35,12 +34,12 @@ function PageLoader() {
   return (
     <div style={{
       display: 'flex', alignItems: 'center', justifyContent: 'center',
-      minHeight: '60vh', color: 'var(--text-dim)',
+      minHeight: '60vh',
     }}>
       <div style={{
-        width: 36, height: 36, borderRadius: '50%',
-        border: '3px solid rgba(255, 215, 0, 0.1)',
-        borderTopColor: '#FFD700',
+        width: 32, height: 32, borderRadius: '50%',
+        border: '2px solid rgba(255, 255, 255, 0.06)',
+        borderTopColor: 'var(--accent, #FF4D00)',
         animation: 'spin 0.8s linear infinite',
       }} />
     </div>
@@ -50,7 +49,6 @@ function PageLoader() {
 export default function App() {
   return (
     <>
-      <StarBackground />
       <SplashScreen />
       <div style={{ position: 'relative', zIndex: 1 }}>
         <Suspense fallback={<PageLoader />}>

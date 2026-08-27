@@ -257,93 +257,77 @@ export default function LoginRegister() {
     setRelation("");
   };
 
-  const labelStyle = { fontSize: "0.8rem", fontWeight: 600, color: "var(--text-muted)", marginLeft: 2, display: "block", marginBottom: 6 };
+  const labelStyle = { fontSize: "0.72rem", fontWeight: 600, color: "var(--text-muted)", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.06em", fontFamily: "var(--font-display)" };
 
   return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 16, position: "relative", overflow: "hidden", background: "var(--bg-primary)" }}>
-      {/* Ambient frosted orbs */}
-      <div className="bg-blur-cyan" style={{ top: "15%", left: "15%", width: 350, height: 350 }} />
-      <div className="bg-blur-purple" style={{ bottom: "15%", right: "15%", width: 350, height: 350 }} />
-      <div className="bg-blur-cyan" style={{ bottom: "40%", left: "60%", width: 180, height: 180, opacity: 0.4 }} />
 
-      {/* Theme toggle */}
-      <motion.button
-        onClick={toggle}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        style={{
-          position: "absolute", top: 20, right: 20, zIndex: 20,
-          width: 42, height: 42, borderRadius: 12,
-          background: "rgba(255, 255, 255, 0.06)",
-          backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
-          border: "1px solid rgba(255, 255, 255, 0.1)",
-          cursor: "pointer",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          fontSize: "1.1rem",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-        }}
-        aria-label="Toggle theme"
-      >
-        {theme === "dark" ? "☀️" : "🌙"}
-      </motion.button>
+      {/* Back to home */}
+      <a href="/" style={{
+        position: "absolute", top: 20, left: 20, zIndex: 20,
+        display: "flex", alignItems: "center", gap: 8,
+        color: "var(--text-secondary)", fontSize: "0.82rem", fontWeight: 500,
+        textDecoration: "none", fontFamily: "var(--font-display)",
+      }}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        Back
+      </a>
 
       <GlassCard style={{ width: "100%", maxWidth: 440, padding: "clamp(24px, 5vw, 36px)", zIndex: 10 }} delay={0}>
         {/* Logo */}
         <div style={{ textAlign: "center", marginBottom: 24 }}>
           <div style={{ display: "flex", justifyContent: "center", marginBottom: 14 }}>
-            <div className="animate-pulse-glow" style={{
-              width: 52, height: 52, borderRadius: "50%",
-              border: "1px solid rgba(255, 215, 0, 0.25)",
-              background: "rgba(255, 215, 0, 0.05)",
-              backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
+            <div style={{
+              width: 44, height: 44, borderRadius: 8,
+              background: "var(--accent)",
               display: "flex", alignItems: "center", justifyContent: "center",
-            }}>
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--primary-yellow)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>
-            </div>
+              color: "#000", fontWeight: 700, fontSize: "1rem",
+              fontFamily: "var(--font-display)",
+            }}>SP</div>
           </div>
-          <h1 style={{ fontSize: "1.5rem", fontWeight: 800, fontFamily: "'Plus Jakarta Sans',sans-serif", marginBottom: 4, letterSpacing: "-0.02em" }}>
-            Student <span className="text-gradient">Pulse</span>
+          <h1 style={{ fontSize: "1.4rem", fontWeight: 700, fontFamily: "var(--font-display)", marginBottom: 4, letterSpacing: "-0.03em" }}>
+            {isLogin ? "Welcome back" : "Create account"}
           </h1>
           <p style={{ color: "var(--text-muted)", fontSize: "0.82rem" }}>
-            {isLogin ? "Welcome back! Ready to track?" : "Start your wellness journey today."}
+            {isLogin ? "Sign in to continue" : "Start your wellness journey"}
           </p>
         </div>
 
         {/* Error */}
         {error && (
           <div style={{
-            background: "rgba(251, 113, 133, 0.06)", border: "1px solid rgba(251, 113, 133, 0.2)",
-            borderRadius: 12, padding: "10px 14px", marginBottom: 14, color: "var(--danger)",
-            fontSize: "0.78rem", display: "flex", alignItems: "center", gap: 8,
-            backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
+            background: "rgba(255, 59, 59, 0.06)", border: "1px solid rgba(255, 59, 59, 0.15)",
+            borderLeft: "3px solid var(--danger)",
+            borderRadius: 6, padding: "10px 14px", marginBottom: 14, color: "var(--danger)",
+            fontSize: "0.78rem",
           }}>
-            <span>⚠️</span> {error}
+            {error}
           </div>
         )}
 
         {/* ─── Google Sign-In Button ─── */}
         <button onClick={handleGoogleAuth} style={{
-          width: "100%", padding: "12px 20px", borderRadius: 14,
-          background: "rgba(255,255,255,0.04)",
-          border: "1px solid var(--border-subtle)",
-          backdropFilter: "blur(8px)",
+          width: "100%", padding: "12px 20px", borderRadius: 6,
+          background: "var(--bg-elevated)",
+          border: "1px solid var(--border-light)",
           cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
-          fontSize: "0.88rem", fontWeight: 600, color: "var(--text-main)",
-          transition: "all 0.2s",
+          fontSize: "0.85rem", fontWeight: 500, color: "var(--text-main)",
+          fontFamily: "var(--font-body)",
+          transition: "border-color 0.2s",
           marginBottom: 18,
         }}
-          onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; e.currentTarget.style.borderColor = "rgba(255,215,0,0.3)"; }}
-          onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; e.currentTarget.style.borderColor = "var(--border-subtle)"; }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--border-medium)"; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border-light)"; }}
         >
           <GoogleIcon />
           {isLogin ? "Continue with Google" : "Sign up with Google"}
         </button>
 
         {/* Divider */}
-        <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 18 }}>
-          <div style={{ flex: 1, height: 1, background: "var(--border-subtle)" }} />
-          <span style={{ fontSize: "0.72rem", color: "var(--text-dim)", fontWeight: 500 }}>or continue with email</span>
-          <div style={{ flex: 1, height: 1, background: "var(--border-subtle)" }} />
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
+          <div style={{ flex: 1, height: 1, background: "var(--border-light)" }} />
+          <span style={{ fontSize: "0.7rem", color: "var(--text-dim)", fontWeight: 500, fontFamily: "var(--font-display)", textTransform: "uppercase", letterSpacing: "0.06em" }}>or</span>
+          <div style={{ flex: 1, height: 1, background: "var(--border-light)" }} />
         </div>
 
         <AnimatePresence mode="wait">
@@ -386,9 +370,11 @@ export default function LoginRegister() {
                 <button type="button" onClick={() => setShowPwd(!showPwd)}
                   style={{
                     position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)",
-                    background: "none", border: "none", color: "var(--text-dim)", cursor: "pointer", fontSize: "1rem",
+                    background: "none", border: "none", color: "var(--text-dim)", cursor: "pointer",
+                    fontSize: "0.72rem", fontFamily: "var(--font-display)", fontWeight: 600,
+                    textTransform: "uppercase", letterSpacing: "0.04em",
                   }}>
-                  {showPwd ? "🙈" : "👁️"}
+                  {showPwd ? "Hide" : "Show"}
                 </button>
               </div>
 
@@ -397,7 +383,7 @@ export default function LoginRegister() {
                 <div style={{ marginTop: 8, display: "flex", flexDirection: "column", gap: 3 }}>
                   {pwdRules.map((r, i) => (
                     <div key={i} className={`pwd-rule ${r.pass ? "pass" : "fail"}`}>
-                      <span>{r.pass ? "✅" : "○"}</span>
+                      <span>{r.pass ? "✓" : "○"}</span>
                       <span>{r.label}</span>
                     </div>
                   ))}
@@ -415,16 +401,16 @@ export default function LoginRegister() {
                 <div
                   onClick={() => setRememberMe(!rememberMe)}
                   style={{
-                    width: 20, height: 20, borderRadius: 6,
-                    border: `1.5px solid ${rememberMe ? '#FFD700' : 'var(--border-medium)'}`,
-                    background: rememberMe ? 'rgba(255,215,0,0.12)' : 'transparent',
+                    width: 18, height: 18, borderRadius: 4,
+                    border: `1.5px solid ${rememberMe ? 'var(--accent)' : 'var(--border-medium)'}`,
+                    background: rememberMe ? 'var(--accent-dim)' : 'transparent',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     transition: 'all 0.2s ease', flexShrink: 0,
                     cursor: 'pointer',
                   }}
                 >
                   {rememberMe && (
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFD700" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
                   )}
@@ -437,22 +423,23 @@ export default function LoginRegister() {
             {!isLogin && (
               <div>
                 <label style={labelStyle}>I am a...</label>
-                <div style={{ display: "flex", gap: 8 }}>
+                <div style={{ display: "flex", gap: 6, background: "var(--bg-elevated)", borderRadius: 6, padding: 3, border: "1px solid var(--border-light)" }}>
                   {[
-                    { value: "student", icon: "🎓", label: "Student" },
-                    { value: "parent", icon: "👨‍👩‍👦", label: "Parent" },
+                    { value: "student", label: "Student" },
+                    { value: "parent", label: "Parent" },
                   ].map(r => (
                     <button key={r.value} type="button" onClick={() => setRole(r.value)}
                       style={{
-                        flex: 1, padding: "11px 14px", borderRadius: 12, cursor: "pointer",
-                        border: `1px solid ${role === r.value ? "var(--primary-yellow)" : "var(--border-subtle)"}`,
-                        background: role === r.value ? "rgba(255,215,0,0.08)" : "transparent",
-                        color: role === r.value ? "var(--primary-yellow)" : "var(--text-muted)",
-                        fontWeight: role === r.value ? 700 : 500, fontSize: "0.88rem",
-                        display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                        flex: 1, padding: "9px 14px", borderRadius: 4, cursor: "pointer",
+                        border: "none",
+                        background: role === r.value ? "var(--accent)" : "transparent",
+                        color: role === r.value ? "#000" : "var(--text-muted)",
+                        fontWeight: 700, fontSize: "0.8rem",
+                        fontFamily: "var(--font-display)",
+                        textTransform: "uppercase", letterSpacing: "0.04em",
                         transition: "all 0.2s",
                       }}>
-                      <span>{r.icon}</span> {r.label}
+                      {r.label}
                     </button>
                   ))}
                 </div>
@@ -465,7 +452,7 @@ export default function LoginRegister() {
                 style={{ display: "flex", flexDirection: "column", gap: 14, overflow: "hidden" }}>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                   <div>
-                    <label style={labelStyle}>📅 Date of Birth</label>
+                    <label style={labelStyle}>Date of Birth</label>
                     <input type="date" className="form-input" value={dob}
                       onChange={e => setDob(e.target.value)} max={new Date().toISOString().split("T")[0]} style={{ colorScheme: "dark" }} required />
                   </div>
@@ -475,14 +462,15 @@ export default function LoginRegister() {
                       {["Male", "Female"].map(g => (
                         <button key={g} type="button" onClick={() => setGender(g)}
                           style={{
-                            flex: 1, padding: "10px 8px", borderRadius: 10, cursor: "pointer",
-                            border: `1px solid ${gender === g ? (g === "Male" ? "#60a5fa" : "#f472b6") : "var(--border-subtle)"}`,
-                            background: gender === g ? (g === "Male" ? "rgba(96,165,250,0.08)" : "rgba(244,114,182,0.08)") : "transparent",
-                            color: gender === g ? (g === "Male" ? "#60a5fa" : "#f472b6") : "var(--text-muted)",
-                            fontWeight: gender === g ? 700 : 500, fontSize: "0.82rem",
+                            flex: 1, padding: "9px 8px", borderRadius: 6, cursor: "pointer",
+                            border: `1px solid ${gender === g ? "var(--accent)" : "var(--border-light)"}`,
+                            background: gender === g ? "var(--accent-dim)" : "transparent",
+                            color: gender === g ? "var(--accent)" : "var(--text-muted)",
+                            fontWeight: 600, fontSize: "0.8rem",
+                            fontFamily: "var(--font-display)",
                             transition: "all 0.2s",
                           }}>
-                          {g === "Male" ? "♂️" : "♀️"} {g}
+                          {g}
                         </button>
                       ))}
                     </div>
@@ -500,14 +488,15 @@ export default function LoginRegister() {
                   {["Father", "Mother", "Other"].map(r => (
                     <button key={r} type="button" onClick={() => setRelation(r)}
                       style={{
-                        flex: 1, padding: "10px 8px", borderRadius: 10, cursor: "pointer",
-                        border: `1px solid ${relation === r ? "var(--primary-yellow)" : "var(--border-subtle)"}`,
-                        background: relation === r ? "rgba(255,215,0,0.08)" : "transparent",
-                        color: relation === r ? "var(--primary-yellow)" : "var(--text-muted)",
-                        fontWeight: relation === r ? 700 : 500, fontSize: "0.82rem",
+                        flex: 1, padding: "9px 8px", borderRadius: 6, cursor: "pointer",
+                        border: `1px solid ${relation === r ? "var(--accent)" : "var(--border-light)"}`,
+                        background: relation === r ? "var(--accent-dim)" : "transparent",
+                        color: relation === r ? "var(--accent)" : "var(--text-muted)",
+                        fontWeight: 600, fontSize: "0.8rem",
+                        fontFamily: "var(--font-display)",
                         transition: "all 0.2s",
                       }}>
-                      {r === "Father" ? "👨" : r === "Mother" ? "👩" : "👤"} {r}
+                      {r}
                     </button>
                   ))}
                 </div>
@@ -524,7 +513,7 @@ export default function LoginRegister() {
           <p style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
             {isLogin ? "Don't have an account?" : "Already have an account?"}
             <button onClick={switchMode}
-              style={{ marginLeft: 8, fontWeight: 700, color: "var(--primary-yellow)", background: "none", border: "none", cursor: "pointer" }}>
+              style={{ marginLeft: 8, fontWeight: 700, color: "var(--accent)", background: "none", border: "none", cursor: "pointer", fontFamily: "var(--font-display)" }}>
               {isLogin ? "Sign Up" : "Log In"}
             </button>
           </p>

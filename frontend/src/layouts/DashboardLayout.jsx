@@ -4,6 +4,27 @@ import { useTheme } from "@/lib/theme";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+/* Lucide-style SVG Icons */
+const Icons = {
+  overview: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>,
+  tracker: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg>,
+  homework: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8Z"/><path d="M15 3v4a2 2 0 0 0 2 2h4"/></svg>,
+  attendance: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
+  notes: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>,
+  projects: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>,
+  reports: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 13h4"/><path d="M10 17h4"/><path d="M10 9h1"/></svg>,
+  burnout: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 12 12 6"/><path d="M12 12 16 14"/></svg>,
+  productivity: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/></svg>,
+  achievements: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>,
+  about: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>,
+  settings: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>,
+  logout: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>,
+  menu: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>,
+  close: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>,
+  fire: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>,
+  bell: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>,
+};
+
 export default function DashboardLayout() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -38,18 +59,18 @@ export default function DashboardLayout() {
   }, []);
 
   const navItems = [
-    { name: "Overview", path: "/dashboard", icon: "📊" },
-    { name: "Tracker", path: "/dashboard/tracker", icon: "📝" },
-    { name: "Assignments", path: "/dashboard/homework", icon: "📋" },
-    { name: "Attendance", path: "/dashboard/attendance", icon: "✅" },
-    { name: "Notes", path: "/dashboard/notes", icon: "🗒️" },
-    { name: "Projects", path: "/dashboard/projects", icon: "📁" },
-    { name: "Report Cards", path: "/dashboard/reports", icon: "📄" },
-    { name: "Burnout", path: "/dashboard/burnout", icon: "🧠" },
-    { name: "Productivity", path: "/dashboard/productivity", icon: "📈" },
-    { name: "Achievements", path: "/dashboard/achievements", icon: "🏆" },
-    { name: "About Us", path: "/dashboard/about", icon: "ℹ️" },
-    { name: "Profile", path: "/dashboard/profile", icon: "⚙️" },
+    { name: "Overview", path: "/dashboard", icon: Icons.overview },
+    { name: "Tracker", path: "/dashboard/tracker", icon: Icons.tracker },
+    { name: "Assignments", path: "/dashboard/homework", icon: Icons.homework },
+    { name: "Attendance", path: "/dashboard/attendance", icon: Icons.attendance },
+    { name: "Notes", path: "/dashboard/notes", icon: Icons.notes },
+    { name: "Projects", path: "/dashboard/projects", icon: Icons.projects },
+    { name: "Report Cards", path: "/dashboard/reports", icon: Icons.reports },
+    { name: "Burnout", path: "/dashboard/burnout", icon: Icons.burnout },
+    { name: "Productivity", path: "/dashboard/productivity", icon: Icons.productivity },
+    { name: "Achievements", path: "/dashboard/achievements", icon: Icons.achievements },
+    { name: "About Us", path: "/dashboard/about", icon: Icons.about },
+    { name: "Profile", path: "/dashboard/profile", icon: Icons.settings },
   ];
 
   const initials = user?.full_name?.split(" ").map(n => n[0]).join("").toUpperCase() || "SP";
@@ -66,75 +87,73 @@ export default function DashboardLayout() {
 
       {/* ═══ DESKTOP SIDEBAR ═══ */}
       <aside className="desktop-sidebar" style={{
-        width: 250, flexShrink: 0, display: "flex", flexDirection: "column",
+        width: 230, flexShrink: 0, display: "flex", flexDirection: "column",
         background: "var(--bg-secondary)",
         borderRight: "1px solid var(--border-subtle)",
-        backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
-        zIndex: 30, transition: "all 0.4s ease",
+        zIndex: 30,
       }}>
         {/* Logo */}
-        <div style={{ height: 68, display: "flex", alignItems: "center", padding: "0 22px", borderBottom: "1px solid var(--border-subtle)" }}>
+        <div style={{
+          height: 60, display: "flex", alignItems: "center", padding: "0 20px",
+          borderBottom: "1px solid var(--border-subtle)",
+        }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{
-              width: 34, height: 34, borderRadius: 10,
-              background: "linear-gradient(135deg, #FFD700, #FFC107)",
+              width: 30, height: 30, borderRadius: 6,
+              background: "var(--accent)",
               display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: "0 0 16px rgba(255, 215, 0, 0.3)",
-            }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>
-            </div>
-            <span style={{ fontWeight: 800, fontSize: "1.05rem", fontFamily: "'Plus Jakarta Sans',sans-serif", letterSpacing: "-0.02em" }}>Student Pulse</span>
+              color: "#000", fontWeight: 700, fontSize: "0.75rem",
+              fontFamily: "var(--font-display)",
+            }}>SP</div>
+            <span style={{
+              fontWeight: 700, fontSize: "0.95rem",
+              fontFamily: "var(--font-display)",
+              letterSpacing: "-0.02em",
+            }}>Pulse</span>
           </div>
         </div>
 
         {/* Nav */}
-        <div style={{ padding: "10px 12px", flex: 1, overflowY: "auto" }}>
+        <div style={{ padding: "10px 10px", flex: 1, overflowY: "auto" }}>
           <nav style={{ display: "flex", flexDirection: "column", gap: 2 }}>
             {navItems.map(item => (
               <Link key={item.path} to={item.path}
                 className={`nav-item ${pathname === item.path ? "active" : ""}`}>
-                <span style={{ fontSize: "1.1rem" }}>{item.icon}</span>
+                <span style={{ width: 18, height: 18, display: "flex", flexShrink: 0 }}>{item.icon}</span>
                 <span>{item.name}</span>
               </Link>
             ))}
           </nav>
         </div>
 
-        {/* Theme Toggle + User */}
-        <div style={{ padding: 14, borderTop: "1px solid var(--border-subtle)" }}>
-          <button onClick={toggle} style={{
-            width: "100%", padding: "9px 14px", borderRadius: 12,
-            border: "1px solid var(--border-subtle)",
-            background: "rgba(255, 255, 255, 0.04)",
-            backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
-            color: "var(--text-muted)", cursor: "pointer",
-            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-            fontSize: "0.82rem", fontWeight: 600, marginBottom: 10,
-            transition: "all 0.3s ease",
-          }}>
-            {theme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode"}
-          </button>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 4px" }}>
+        {/* User section */}
+        <div style={{ padding: 12, borderTop: "1px solid var(--border-subtle)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "6px 4px" }}>
             <div style={{
-              width: 36, height: 36, borderRadius: 10,
-              background: "linear-gradient(135deg, #FFD700, #FFC107)",
+              width: 32, height: 32, borderRadius: 6,
+              background: "var(--accent)",
               display: "flex", alignItems: "center", justifyContent: "center",
-              color: "#0a0a0a", fontWeight: 700, fontSize: "0.75rem",
-              boxShadow: "0 0 12px rgba(255, 215, 0, 0.2)",
+              color: "#000", fontWeight: 700, fontSize: "0.7rem",
+              fontFamily: "var(--font-display)",
             }}>
               {initials}
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontSize: "0.82rem", fontWeight: 700, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user?.full_name || "Student"}</p>
-              <p style={{ fontSize: "0.72rem", color: "var(--text-dim)" }}>Level {user?.level || 1}</p>
+              <p style={{
+                fontSize: "0.8rem", fontWeight: 600,
+                fontFamily: "var(--font-display)",
+                overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+              }}>{user?.full_name || "Student"}</p>
+              <p style={{ fontSize: "0.7rem", color: "var(--text-dim)" }}>Level {user?.level || 1}</p>
             </div>
             <button onClick={logout} title="Logout"
               style={{
-                background: "rgba(255, 255, 255, 0.04)", border: "1px solid var(--border-subtle)",
-                borderRadius: 8, color: "var(--text-dim)", cursor: "pointer",
-                fontSize: "0.9rem", padding: "6px 8px", transition: "all 0.2s",
+                background: "var(--bg-elevated)", border: "1px solid var(--border-light)",
+                borderRadius: 6, color: "var(--text-dim)", cursor: "pointer",
+                padding: "5px 6px", display: "flex",
+                transition: "all 0.2s",
               }}>
-              🚪
+              <span style={{ width: 14, height: 14, display: "flex" }}>{Icons.logout}</span>
             </button>
           </div>
         </div>
@@ -145,38 +164,34 @@ export default function DashboardLayout() {
 
         {/* MOBILE HEADER */}
         <header className="mobile-header" style={{
-          height: 58, padding: "0 16px", alignItems: "center", justifyContent: "space-between",
+          height: 54, padding: "0 16px", alignItems: "center", justifyContent: "space-between",
           background: "var(--bg-secondary)",
-          backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
           borderBottom: "1px solid var(--border-subtle)",
           zIndex: 40, display: "none",
         }}>
           <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{
-            background: "rgba(255,255,255,0.04)", border: "1px solid var(--border-subtle)",
-            borderRadius: 10, color: "var(--text-main)",
-            fontSize: "1.1rem", cursor: "pointer", padding: "6px 10px",
+            background: "var(--bg-elevated)", border: "1px solid var(--border-light)",
+            borderRadius: 6, color: "var(--text-main)",
+            cursor: "pointer", padding: "6px", display: "flex",
           }}>
-            {mobileMenuOpen ? "✕" : "☰"}
+            <span style={{ width: 18, height: 18, display: "flex" }}>
+              {mobileMenuOpen ? Icons.close : Icons.menu}
+            </span>
           </button>
-          <span style={{ fontWeight: 800, fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: "1rem", letterSpacing: "-0.02em" }}>
+          <span style={{
+            fontWeight: 700, fontFamily: "var(--font-display)",
+            fontSize: "0.95rem", letterSpacing: "-0.02em",
+          }}>
             {pageTitle}
           </span>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <button onClick={toggle} style={{
-              background: "rgba(255,255,255,0.04)", border: "1px solid var(--border-subtle)",
-              borderRadius: 10, cursor: "pointer", fontSize: "1rem",
-              padding: "6px 10px",
-            }}>
-              {theme === "dark" ? "☀️" : "🌙"}
-            </button>
-            <div style={{
-              width: 30, height: 30, borderRadius: 8,
-              background: "linear-gradient(135deg, #FFD700, #FFC107)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              color: "#0a0a0a", fontWeight: 700, fontSize: "0.65rem",
-            }}>
-              {initials}
-            </div>
+          <div style={{
+            width: 30, height: 30, borderRadius: 6,
+            background: "var(--accent)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            color: "#000", fontWeight: 700, fontSize: "0.6rem",
+            fontFamily: "var(--font-display)",
+          }}>
+            {initials}
           </div>
         </header>
 
@@ -189,44 +204,34 @@ export default function DashboardLayout() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
               style={{
-                position: "fixed", top: 58, left: 0, right: 0, bottom: 0,
+                position: "fixed", top: 54, left: 0, right: 0, bottom: 0,
                 background: "var(--bg-secondary)",
-                backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
-                zIndex: 35, overflowY: "auto", padding: 16,
+                zIndex: 35, overflowY: "auto", padding: 14,
               }}
             >
-              <nav style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+              <nav style={{ display: "flex", flexDirection: "column", gap: 2 }}>
                 {navItems.map(item => (
                   <Link key={item.path} to={item.path}
                     className={`nav-item ${pathname === item.path ? "active" : ""}`}
                     onClick={() => setMobileMenuOpen(false)}>
-                    <span style={{ fontSize: "1.2rem" }}>{item.icon}</span>
-                    <span style={{ fontSize: "1rem" }}>{item.name}</span>
+                    <span style={{ width: 18, height: 18, display: "flex" }}>{item.icon}</span>
+                    <span style={{ fontSize: "0.95rem" }}>{item.name}</span>
                   </Link>
                 ))}
               </nav>
-              <div style={{ marginTop: 20, padding: "16px 0", borderTop: "1px solid var(--border-subtle)" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-                  <div style={{
-                    width: 38, height: 38, borderRadius: 10,
-                    background: "linear-gradient(135deg, #FFD700, #FFC107)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    color: "#0a0a0a", fontWeight: 700, fontSize: "0.8rem",
-                  }}>{initials}</div>
-                  <div>
-                    <p style={{ fontWeight: 700 }}>{user?.full_name || "Student"}</p>
-                    <p style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>Level {user?.level || 1}</p>
-                  </div>
-                </div>
+              <div style={{ marginTop: 16, padding: "14px 0", borderTop: "1px solid var(--border-subtle)" }}>
                 <button onClick={logout} style={{
-                  width: "100%", padding: "11px", borderRadius: 12,
-                  border: "1px solid rgba(251, 113, 133, 0.3)",
-                  background: "rgba(251, 113, 133, 0.06)",
-                  backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
+                  width: "100%", padding: "10px", borderRadius: 6,
+                  border: "1px solid rgba(255, 59, 59, 0.2)",
+                  background: "rgba(255, 59, 59, 0.06)",
                   color: "var(--danger)",
-                  cursor: "pointer", fontWeight: 700, fontSize: "0.875rem",
+                  cursor: "pointer", fontWeight: 700, fontSize: "0.85rem",
+                  fontFamily: "var(--font-display)",
+                  textTransform: "uppercase", letterSpacing: "0.04em",
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                 }}>
-                  🚪 Log Out
+                  <span style={{ width: 16, height: 16, display: "flex" }}>{Icons.logout}</span>
+                  Log Out
                 </button>
               </div>
             </motion.div>
@@ -235,54 +240,58 @@ export default function DashboardLayout() {
 
         {/* DESKTOP HEADER */}
         <header className="desktop-sidebar" style={{
-          height: 58, display: "flex", alignItems: "center", justifyContent: "space-between",
-          padding: "0 28px",
+          height: 54, display: "flex", alignItems: "center", justifyContent: "space-between",
+          padding: "0 24px",
           background: "var(--bg-secondary)",
-          backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
           borderBottom: "1px solid var(--border-subtle)", flexShrink: 0,
         }}>
-          <h2 style={{ fontSize: "1.15rem", fontWeight: 800, fontFamily: "'Plus Jakarta Sans',sans-serif", letterSpacing: "-0.02em" }}>{pageTitle}</h2>
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <h2 style={{
+            fontSize: "1.1rem", fontWeight: 700,
+            fontFamily: "var(--font-display)",
+            letterSpacing: "-0.02em",
+          }}>{pageTitle}</h2>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             <div className="stat-badge">
-              <span>🔥</span>
+              <span style={{ width: 14, height: 14, display: "flex", color: "var(--accent)" }}>{Icons.fire}</span>
               <span>{user?.current_streak || 0} Day Streak</span>
             </div>
-            <div style={{ position: "relative", cursor: "pointer" }}>
-              <span style={{ fontSize: "1.1rem" }}>🔔</span>
+            <div style={{ position: "relative", cursor: "pointer", width: 18, height: 18, display: "flex", color: "var(--text-secondary)" }}>
+              {Icons.bell}
               <span className="notif-dot" />
             </div>
           </div>
         </header>
 
         {/* PAGE CONTENT */}
-        <div style={{ flex: 1, overflow: "auto", padding: "clamp(14px, 3vw, 28px)" }}>
+        <div style={{ flex: 1, overflow: "auto", padding: "clamp(14px, 3vw, 24px)" }}>
           {/* Parent Monitoring Banner */}
           {parentOnline && !parentBannerDismissed && (
             <motion.div
-              initial={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               style={{
                 display: "flex", alignItems: "center", gap: 12,
-                padding: "10px 18px", marginBottom: 16, borderRadius: 14,
-                background: "rgba(255, 215, 0, 0.06)",
-                border: "1px solid rgba(255, 215, 0, 0.15)",
-                backdropFilter: "blur(12px)",
+                padding: "10px 16px", marginBottom: 14, borderRadius: 6,
+                background: "var(--accent-subtle)",
+                border: "1px solid rgba(255, 77, 0, 0.12)",
+                borderLeft: "3px solid var(--accent)",
               }}
             >
               <span style={{
-                width: 8, height: 8, borderRadius: "50%",
+                width: 6, height: 6, borderRadius: "50%",
                 background: "var(--success)",
-                boxShadow: "0 0 8px rgba(255, 215, 0, 0.5)",
                 animation: "pulse 2s infinite",
                 flexShrink: 0,
               }} />
-              <span style={{ fontSize: "0.82rem", color: "var(--primary-lavender)", fontWeight: 600, flex: 1 }}>
-                👀 <strong>{parentOnline.name}</strong> is currently monitoring your dashboard
+              <span style={{ fontSize: "0.82rem", color: "var(--text-secondary)", fontWeight: 500, flex: 1 }}>
+                <strong style={{ color: "var(--accent)" }}>{parentOnline.name}</strong> is currently monitoring your dashboard
               </span>
               <button onClick={() => setParentBannerDismissed(true)} style={{
                 background: "none", border: "none", color: "var(--text-dim)",
-                cursor: "pointer", fontSize: "0.9rem", padding: "2px 6px",
-              }}>✕</button>
+                cursor: "pointer", fontSize: "0.85rem", padding: "2px 6px", display: "flex",
+              }}>
+                <span style={{ width: 14, height: 14, display: "flex" }}>{Icons.close}</span>
+              </button>
             </motion.div>
           )}
           <Outlet />
@@ -290,23 +299,24 @@ export default function DashboardLayout() {
 
         {/* MOBILE BOTTOM NAV */}
         <nav className="mobile-bottom-nav" style={{
-          display: "none", height: 62,
+          display: "none", height: 56,
           background: "var(--bg-secondary)",
-          backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
-          borderTop: "1px solid var(--border-subtle)", alignItems: "center",
-          justifyContent: "space-around", padding: "0 4px", flexShrink: 0,
+          borderTop: "1px solid var(--border-subtle)",
+          alignItems: "center", justifyContent: "space-around",
+          padding: "0 4px", flexShrink: 0,
         }}>
           {navItems.slice(0, 5).map(item => {
             const active = pathname === item.path;
             return (
               <Link key={item.path} to={item.path} style={{
-                display: "flex", flexDirection: "column", alignItems: "center", gap: 3,
-                padding: "5px 8px", borderRadius: 12, textDecoration: "none",
-                color: active ? "var(--primary-teal)" : "var(--text-dim)",
-                fontSize: "0.65rem", fontWeight: active ? 700 : 400, transition: "all 0.25s",
-                background: active ? "rgba(255, 215, 0, 0.08)" : "transparent",
+                display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
+                padding: "4px 8px", borderRadius: 6, textDecoration: "none",
+                color: active ? "var(--accent)" : "var(--text-dim)",
+                fontSize: "0.6rem", fontWeight: active ? 700 : 400,
+                fontFamily: "var(--font-display)",
+                transition: "color 0.2s",
               }}>
-                <span style={{ fontSize: "1.2rem" }}>{item.icon}</span>
+                <span style={{ width: 18, height: 18, display: "flex" }}>{item.icon}</span>
                 <span>{item.name}</span>
               </Link>
             );
