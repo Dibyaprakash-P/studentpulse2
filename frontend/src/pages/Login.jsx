@@ -202,8 +202,14 @@ export default function LoginRegister() {
             fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
               headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
             })
-              .then(res => res.json())
+              .then(res => {
+                if (!res.ok) throw new Error(`Google userinfo failed: ${res.status}`);
+                return res.json();
+              })
               .then(async (userInfo) => {
+                if (!userInfo.email) {
+                  throw new Error("No email returned from Google");
+                }
                 const googleUser = {
                   email: userInfo.email,
                   full_name: userInfo.name || userInfo.email.split("@")[0],
@@ -215,8 +221,9 @@ export default function LoginRegister() {
                 localStorage.setItem("sp_access_token", data.access_token);
                 navigate(data.user.role === "parent" ? "/parent" : "/dashboard");
               })
-              .catch(() => {
-                setError("Failed to get user info from Google.");
+              .catch((err) => {
+                console.error("Google sign-in error:", err);
+                setError(err.message || "Failed to get user info from Google.");
                 setLoading(false);
               });
           },
