@@ -77,6 +77,11 @@ async def register(req: RegisterRequest, db: AsyncSession = Depends(get_db)):
     if not req.password or len(req.password) < 6:
         raise HTTPException(400, "Password must be at least 6 characters.")
 
+    # Validate role — only known roles are accepted
+    valid_roles = {"student", "parent", "admin"}
+    if req.role not in valid_roles:
+        raise HTTPException(400, f"Invalid role. Must be one of: {', '.join(sorted(valid_roles))}")
+
     user = User(
         email=req.email,
         full_name=req.full_name,

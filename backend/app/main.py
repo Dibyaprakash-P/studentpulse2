@@ -13,7 +13,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.database import create_tables
-from app.routers import analytics, auth, gamification, parent, tracking
+from app.routers import admin, analytics, auth, gamification, parent, tracking
 
 
 @asynccontextmanager
@@ -45,6 +45,7 @@ app.include_router(tracking.router)
 app.include_router(analytics.router)
 app.include_router(gamification.router)
 app.include_router(parent.router)
+app.include_router(admin.router)
 
 
 @app.get("/")

@@ -1,17 +1,18 @@
 # Netlify deployment configuration for Student Pulse Frontend
+# Built with Vite — outputs to dist/
 
 [build]
   base = "frontend"
   command = "npm run build"
-  publish = "out"
+  publish = "dist"
 
-# Static file caching
+# Static asset caching (Vite hashes filenames for cache-busting)
 [[headers]]
-  for = "/_next/static/*"
+  for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-# SPA fallback for client-side routing
+# SPA fallback for client-side routing (React Router)
 [[redirects]]
   from = "/*"
   to = "/index.html"

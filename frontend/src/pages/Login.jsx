@@ -171,83 +171,70 @@ export default function LoginRegister() {
       return;
     }
 
+    // Safety timeout — reset loading state if nothing happens in 30s
+    const safetyTimeout = setTimeout(() => {
+      setLoading(false);
+      setError("Google Sign-In timed out. Please try again.");
+    }, 30000);
+
     // Wait for the GIS library to load
     if (typeof window === "undefined" || !window.google?.accounts) {
+      clearTimeout(safetyTimeout);
       setError("Google Sign-In is still loading. Please try again in a moment.");
       setLoading(false);
       return;
     }
 
     try {
-      // First try: GIS One Tap / ID prompt approach
-      if (window.google.accounts.id) {
-        window.google.accounts.id.initialize({
+      // Use OAuth2 popup flow (most reliable across all environments)
+      if (window.google.accounts.oauth2) {
+        const tokenClient = window.google.accounts.oauth2.initTokenClient({
           client_id: clientId,
-          callback: handleGoogleCredentialResponse,
-          auto_select: false,
-          cancel_on_tap_outside: false,
-          use_fedcm_for_prompt: true,
-        });
-
-        window.google.accounts.id.prompt((notification) => {
-          if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-            const reason = notification.isNotDisplayed()
-              ? notification.getNotDisplayedReason()
-              : notification.getSkippedReason();
-            console.log("GIS prompt unavailable, reason:", reason);
-
-            // Fallback: Use google.accounts.oauth2.initTokenClient (popup, no redirect URI needed)
-            if (window.google.accounts.oauth2) {
-              const tokenClient = window.google.accounts.oauth2.initTokenClient({
-                client_id: clientId,
-                scope: "openid email profile",
-                callback: (tokenResponse) => {
-                  if (tokenResponse.error) {
-                    setError("Google sign-in was cancelled.");
-                    setLoading(false);
-                    return;
-                  }
-                  // Use the access token to fetch user info from Google's userinfo endpoint
-                  fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
-                    headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
-                  })
-                    .then(res => res.json())
-                    .then(async (userInfo) => {
-                      const googleUser = {
-                        email: userInfo.email,
-                        full_name: userInfo.name || userInfo.email.split("@")[0],
-                        picture: userInfo.picture || null,
-                        google_id: userInfo.sub,
-                      };
-                      const data = await loginWithGoogleCredential(googleUser, role);
-                      localStorage.setItem("sp_user", JSON.stringify(data.user));
-                      localStorage.setItem("sp_access_token", data.access_token);
-                      navigate(data.user.role === "parent" ? "/parent" : "/dashboard");
-                    })
-                    .catch(err => {
-                      setError("Failed to get user info from Google.");
-                      setLoading(false);
-                    });
-                },
-                error_callback: (err) => {
-                  console.log("Token client error:", err);
-                  setError("Google sign-in was cancelled.");
-                  setLoading(false);
-                },
-              });
-              tokenClient.requestAccessToken({ prompt: "select_account" });
-            } else {
-              setError("Google Sign-In is not available. Please try again later.");
+          scope: "openid email profile",
+          callback: (tokenResponse) => {
+            clearTimeout(safetyTimeout);
+            if (tokenResponse.error) {
+              setError("Google sign-in was cancelled.");
               setLoading(false);
+              return;
             }
-          }
-          // If displayed, the user is interacting with the prompt — callback will handle it
+            // Use the access token to fetch user info
+            fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+              headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+            })
+              .then(res => res.json())
+              .then(async (userInfo) => {
+                const googleUser = {
+                  email: userInfo.email,
+                  full_name: userInfo.name || userInfo.email.split("@")[0],
+                  picture: userInfo.picture || null,
+                  google_id: userInfo.sub,
+                };
+                const data = await loginWithGoogleCredential(googleUser, role);
+                localStorage.setItem("sp_user", JSON.stringify(data.user));
+                localStorage.setItem("sp_access_token", data.access_token);
+                navigate(data.user.role === "parent" ? "/parent" : "/dashboard");
+              })
+              .catch(() => {
+                setError("Failed to get user info from Google.");
+                setLoading(false);
+              });
+          },
+          error_callback: (err) => {
+            clearTimeout(safetyTimeout);
+            console.log("Google OAuth error:", err);
+            setError("Google sign-in was cancelled or blocked. Please try again.");
+            setLoading(false);
+          },
         });
+        tokenClient.requestAccessToken({ prompt: "select_account" });
       } else {
-        setError("Google Sign-In library not loaded. Please refresh the page.");
+        clearTimeout(safetyTimeout);
+        setError("Google Sign-In library not fully loaded. Please refresh the page.");
         setLoading(false);
       }
     } catch (err) {
+      clearTimeout(safetyTimeout);
       console.error("Google Sign-In error:", err);
       setError("Failed to initialize Google Sign-In. Please try again.");
       setLoading(false);

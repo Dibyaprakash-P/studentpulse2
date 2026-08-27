@@ -66,3 +66,29 @@ async def get_current_user(
     if user is None:
         raise HTTPException(status_code=401, detail="User not found")
     return user
+
+
+# ── Role-Based Access Control (RBAC) ───────────────────────────
+def require_role(*allowed_roles: str):
+    """
+    FastAPI dependency factory — restricts endpoint access to specific roles.
+
+    Usage:
+        @router.get("/admin-only", dependencies=[Depends(require_role("admin"))])
+        async def admin_endpoint(...): ...
+
+    Or inject the user directly:
+        async def endpoint(user: User = Depends(require_role("admin"))): ...
+    """
+    async def role_checker(user=Depends(get_current_user)):
+        if user.role not in allowed_roles:
+            raise HTTPException(
+                status_code=403,
+                detail=f"Access denied. Required role: {', '.join(allowed_roles)}",
+            )
+        return user
+    return role_checker
+
+
+# Convenience shortcut for admin-only endpoints
+get_current_admin = require_role("admin")
