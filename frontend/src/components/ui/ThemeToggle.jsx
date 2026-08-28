@@ -30,7 +30,7 @@ export default function ThemeToggle() {
       whileTap={{ scale: 0.95 }}
       style={{
         position: "fixed",
-        bottom: 24,
+        bottom: 80,
         right: 24,
         zIndex: 999,
         width: 48,
