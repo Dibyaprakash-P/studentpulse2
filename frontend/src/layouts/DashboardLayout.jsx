@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/lib/auth";
 import { useTheme } from "@/lib/theme";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 /* Lucide-style SVG Icons */
@@ -23,6 +23,9 @@ const Icons = {
   close: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>,
   fire: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>,
   bell: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>,
+  sun: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>,
+  moon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>,
+  check: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
 };
 
 export default function DashboardLayout() {
@@ -33,12 +36,46 @@ export default function DashboardLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [parentOnline, setParentOnline] = useState(null);
   const [parentBannerDismissed, setParentBannerDismissed] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const notifRef = useRef(null);
 
   useEffect(() => {
     if (!loading && !user) navigate("/login");
   }, [user, loading, navigate]);
 
-  useEffect(() => { setMobileMenuOpen(false); }, [pathname]);
+  useEffect(() => { setMobileMenuOpen(false); setNotifOpen(false); }, [pathname]);
+
+  /* Close notification panel on outside click */
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (notifRef.current && !notifRef.current.contains(e.target)) {
+        setNotifOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  /* Generate smart notifications based on user data */
+  useEffect(() => {
+    if (!user) return;
+    const notifs = [];
+    const now = new Date();
+
+    if ((user.current_streak || 0) >= 7) {
+      notifs.push({ id: "streak", icon: Icons.fire, color: "var(--accent)", title: "Streak milestone!", desc: `You're on a ${user.current_streak}-day streak. Keep it up!`, time: "Just now", read: false });
+    }
+    if ((user.current_streak || 0) === 0) {
+      notifs.push({ id: "streak-lost", icon: Icons.fire, color: "var(--warning)", title: "Start your streak", desc: "Log today's mood and tasks to begin a new streak.", time: "Today", read: false });
+    }
+    notifs.push({ id: "welcome", icon: Icons.bell, color: "var(--cyan)", title: "Welcome back!", desc: `Good ${now.getHours() < 12 ? "morning" : now.getHours() < 17 ? "afternoon" : "evening"}, ${user.full_name?.split(" ")[0] || "Student"}. Ready to track today?`, time: "Now", read: true });
+    notifs.push({ id: "tip", icon: Icons.achievements, color: "var(--purple)", title: "Pro tip", desc: "Use the Burnout page to monitor your stress levels weekly.", time: "Tip", read: true });
+
+    setNotifications(notifs);
+    setUnreadCount(notifs.filter(n => !n.read).length);
+  }, [user]);
 
   /* Detect if parent is monitoring */
   useEffect(() => {
@@ -184,14 +221,31 @@ export default function DashboardLayout() {
           }}>
             {pageTitle}
           </span>
-          <div style={{
-            width: 30, height: 30, borderRadius: 6,
-            background: "var(--accent)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            color: "#000", fontWeight: 700, fontSize: "0.6rem",
-            fontFamily: "var(--font-display)",
-          }}>
-            {initials}
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            {/* Mobile theme toggle */}
+            <button
+              onClick={toggle}
+              title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              style={{
+                width: 30, height: 30, borderRadius: 6,
+                background: "var(--bg-elevated)", border: "1px solid var(--border-light)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                color: "var(--text-secondary)", cursor: "pointer",
+              }}
+            >
+              <span style={{ width: 16, height: 16, display: "flex" }}>
+                {theme === "dark" ? Icons.sun : Icons.moon}
+              </span>
+            </button>
+            <div style={{
+              width: 30, height: 30, borderRadius: 6,
+              background: "var(--accent)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              color: "#000", fontWeight: 700, fontSize: "0.6rem",
+              fontFamily: "var(--font-display)",
+            }}>
+              {initials}
+            </div>
           </div>
         </header>
 
@@ -255,9 +309,152 @@ export default function DashboardLayout() {
               <span style={{ width: 14, height: 14, display: "flex", color: "var(--accent)" }}>{Icons.fire}</span>
               <span>{user?.current_streak || 0} Day Streak</span>
             </div>
-            <div style={{ position: "relative", cursor: "pointer", width: 18, height: 18, display: "flex", color: "var(--text-secondary)" }}>
-              {Icons.bell}
-              <span className="notif-dot" />
+
+            {/* Theme Toggle */}
+            <button
+              onClick={toggle}
+              title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              className="theme-toggle-btn"
+              style={{
+                position: "relative", width: 36, height: 36, display: "flex",
+                alignItems: "center", justifyContent: "center",
+                background: "var(--bg-elevated)", border: "1px solid var(--border-light)",
+                borderRadius: "var(--radius-md)", color: "var(--text-secondary)",
+                cursor: "pointer", transition: "all 0.3s ease",
+              }}
+            >
+              <span style={{
+                width: 18, height: 18, display: "flex",
+                transition: "transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s",
+                transform: theme === "dark" ? "rotate(0deg)" : "rotate(180deg)",
+              }}>
+                {theme === "dark" ? Icons.sun : Icons.moon}
+              </span>
+            </button>
+
+            {/* Notification Bell */}
+            <div ref={notifRef} style={{ position: "relative" }}>
+              <button
+                onClick={() => { setNotifOpen(!notifOpen); if (!notifOpen) { setUnreadCount(0); setNotifications(prev => prev.map(n => ({ ...n, read: true }))); } }}
+                title="Notifications"
+                className="theme-toggle-btn"
+                style={{
+                  position: "relative", width: 36, height: 36, display: "flex",
+                  alignItems: "center", justifyContent: "center",
+                  background: "var(--bg-elevated)", border: "1px solid var(--border-light)",
+                  borderRadius: "var(--radius-md)", color: "var(--text-secondary)",
+                  cursor: "pointer", transition: "all 0.3s ease",
+                }}
+              >
+                <span style={{ width: 18, height: 18, display: "flex" }}>{Icons.bell}</span>
+                {unreadCount > 0 && (
+                  <span style={{
+                    position: "absolute", top: 4, right: 4,
+                    width: 8, height: 8, borderRadius: "50%",
+                    background: "var(--accent)",
+                    border: "2px solid var(--bg-secondary)",
+                    animation: "pulse 2s infinite",
+                  }} />
+                )}
+              </button>
+
+              {/* Notification Dropdown */}
+              <AnimatePresence>
+                {notifOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    style={{
+                      position: "absolute", top: "calc(100% + 8px)", right: 0,
+                      width: 340, maxHeight: 420, overflowY: "auto",
+                      background: "var(--bg-card-solid)",
+                      border: "1px solid var(--border-light)",
+                      borderRadius: "var(--radius-lg)",
+                      boxShadow: "var(--shadow-float)",
+                      zIndex: 100,
+                    }}
+                  >
+                    <div style={{
+                      padding: "14px 16px 10px", borderBottom: "1px solid var(--border-subtle)",
+                      display: "flex", alignItems: "center", justifyContent: "space-between",
+                    }}>
+                      <h4 style={{
+                        fontSize: "0.85rem", fontWeight: 700,
+                        fontFamily: "var(--font-display)",
+                        letterSpacing: "-0.02em",
+                      }}>Notifications</h4>
+                      <span style={{
+                        fontSize: "0.7rem", color: "var(--text-dim)",
+                        fontFamily: "var(--font-display)",
+                      }}>{notifications.length} total</span>
+                    </div>
+
+                    {notifications.length === 0 ? (
+                      <div style={{ padding: "32px 16px", textAlign: "center", color: "var(--text-dim)", fontSize: "0.82rem" }}>
+                        No notifications yet
+                      </div>
+                    ) : (
+                      <div style={{ padding: "6px" }}>
+                        {notifications.map(notif => (
+                          <div key={notif.id} style={{
+                            display: "flex", gap: 12, padding: "10px 12px",
+                            borderRadius: "var(--radius-md)",
+                            transition: "background 0.2s",
+                            cursor: "pointer",
+                            background: notif.read ? "transparent" : "var(--accent-subtle)",
+                          }}
+                            onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.02)"}
+                            onMouseLeave={e => e.currentTarget.style.background = notif.read ? "transparent" : "var(--accent-subtle)"}
+                          >
+                            <div style={{
+                              width: 32, height: 32, borderRadius: "var(--radius-md)",
+                              display: "flex", alignItems: "center", justifyContent: "center",
+                              flexShrink: 0,
+                              background: `color-mix(in srgb, ${notif.color || 'var(--accent)'} 12%, transparent)`,
+                              color: notif.color || "var(--accent)",
+                            }}>
+                              <span style={{ width: 16, height: 16, display: "flex" }}>{notif.icon}</span>
+                            </div>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <p style={{
+                                fontSize: "0.8rem", fontWeight: 600,
+                                fontFamily: "var(--font-display)",
+                                marginBottom: 2,
+                              }}>{notif.title}</p>
+                              <p style={{
+                                fontSize: "0.75rem", color: "var(--text-secondary)",
+                                lineHeight: 1.4,
+                              }}>{notif.desc}</p>
+                            </div>
+                            <span style={{
+                              fontSize: "0.65rem", color: "var(--text-dim)",
+                              fontFamily: "var(--font-display)",
+                              whiteSpace: "nowrap", flexShrink: 0, marginTop: 2,
+                            }}>{notif.time}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    <div style={{
+                      padding: "10px 16px", borderTop: "1px solid var(--border-subtle)",
+                      textAlign: "center",
+                    }}>
+                      <button
+                        onClick={() => setNotifOpen(false)}
+                        style={{
+                          background: "none", border: "none", color: "var(--accent)",
+                          fontSize: "0.75rem", fontWeight: 600, cursor: "pointer",
+                          fontFamily: "var(--font-display)",
+                          textTransform: "uppercase", letterSpacing: "0.04em",
+                        }}
+                      >Close</button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </header>

@@ -100,6 +100,79 @@
   --font-body: 'DM Sans', system-ui, sans-serif;
 }
 
+/* ── LIGHT THEME ─────────────────────────────────────────────── */
+[data-theme="light"] {
+  /* Surfaces — Clean white layered system */
+  --bg-primary: #F5F5F7;
+  --bg-secondary: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-card-solid: #FFFFFF;
+  --bg-input: #FFFFFF;
+  --bg-elevated: #F0F0F3;
+
+  /* Core Accent — stays vibrant */
+  --accent: #E84400;
+  --accent-hover: #D63D00;
+  --accent-light: #FF6B2B;
+  --accent-dim: rgba(232, 68, 0, 0.08);
+  --accent-subtle: rgba(232, 68, 0, 0.04);
+
+  /* Secondary — deeper cyan for light bg */
+  --cyan: #0097A7;
+  --cyan-dim: rgba(0, 151, 167, 0.08);
+  --cyan-subtle: rgba(0, 151, 167, 0.04);
+
+  /* Extended Palette */
+  --purple: #7C3AED;
+  --purple-dim: rgba(124, 58, 237, 0.08);
+  --amber: #D97706;
+  --amber-dim: rgba(217, 119, 6, 0.08);
+  --blue: #2563EB;
+  --blue-dim: rgba(37, 99, 235, 0.08);
+
+  /* Legacy aliases */
+  --primary-yellow: #E84400;
+  --primary-yellow-deep: #D63D00;
+  --primary-yellow-light: #FF6B2B;
+  --primary-yellow-muted: #CC3D00;
+  --primary-teal: #E84400;
+  --primary-coral: #E84400;
+  --primary-lavender: #7C3AED;
+  --primary-cyan: #0097A7;
+  --primary-blue: #2563EB;
+  --accent-ice: #0097A7;
+
+  /* Data Visualization */
+  --chart-1: #E84400;
+  --chart-2: #0097A7;
+  --chart-3: #7C3AED;
+  --chart-4: #D97706;
+  --chart-5: #059669;
+  --chart-6: #2563EB;
+  --chart-7: #D63D00;
+
+  /* Text — high contrast on light */
+  --text-main: #1A1A2E;
+  --text-secondary: #5A5A6E;
+  --text-muted: #8B8B9E;
+  --text-dim: #B0B0C0;
+
+  /* Semantic */
+  --danger: #DC2626;
+  --warning: #D97706;
+  --success: #059669;
+
+  /* Borders */
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-light: rgba(0, 0, 0, 0.08);
+  --border-medium: rgba(0, 0, 0, 0.12);
+  --border-glass: rgba(0, 0, 0, 0.06);
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-float: 0 16px 48px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
 /* ═══════════════════════════════════════════════════════════════
    RESET
    ═══════════════════════════════════════════════════════════════ */
@@ -499,6 +572,60 @@ select.form-input { cursor: pointer; }
 .pwd-rule { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; margin-top: 2px; transition: color 0.2s; }
 .pwd-rule.pass { color: var(--success); }
 .pwd-rule.fail { color: var(--text-dim); }
+
+/* ═══════════════════════════════════════════════════════════════
+   THEME TOGGLE BUTTON
+   ═══════════════════════════════════════════════════════════════ */
+.theme-toggle-btn:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+  transform: scale(1.05);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LIGHT THEME OVERRIDES
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+[data-theme="light"] .nav-item:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+[data-theme="light"] .nav-item.active {
+  background: var(--accent-dim);
+}
+[data-theme="light"] .glass-panel {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+[data-theme="light"] .glass-panel:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] input[type="range"] {
+  background: rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] input[type="range"]::-webkit-slider-thumb {
+  background: var(--accent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+[data-theme="light"] .progress-bar-track {
+  background: rgba(0, 0, 0, 0.06);
+}
+[data-theme="light"] .mood-btn {
+  color: var(--text-muted);
+}
+[data-theme="light"] .mood-btn.active {
+  background: var(--accent-dim);
+}
+[data-theme="light"] .bg-blur-cyan,
+[data-theme="light"] .bg-blur-teal,
+[data-theme="light"] .bg-blur-purple,
+[data-theme="light"] .bg-blur-lavender,
+[data-theme="light"] .bg-blur-coral {
+  opacity: 0.4;
+}
 
 /* ═══════════════════════════════════════════════════════════════
    MOBILE RESPONSIVE

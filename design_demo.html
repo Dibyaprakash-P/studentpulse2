@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudentPulse Redesign — Design Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ═══ RESET ═══ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --accent: #FF4D00;
+    --accent-hover: #FF6B2B;
+    --accent-dim: rgba(255, 77, 0, 0.12);
+    --cyan: #00E5FF;
+    --cyan-dim: rgba(0, 229, 255, 0.10);
+    --surface-0: #000000;
+    --surface-1: #0A0A0F;
+    --surface-2: #12121A;
+    --surface-3: #1A1A24;
+    --text-1: #EAEAEA;
+    --text-2: #8B8B9E;
+    --text-3: #4A4A5A;
+    --border: rgba(255, 255, 255, 0.06);
+    --border-hover: rgba(255, 255, 255, 0.12);
+    --danger: #FF3B3B;
+    --success: #00C48C;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--surface-0);
+    color: var(--text-1);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ═══ SECTION DIVIDERS ═══ */
+  .demo-divider {
+    text-align: center;
+    padding: 60px 0 20px;
+    border-top: 1px solid var(--border);
+    margin: 0 40px;
+  }
+  .demo-divider h2 {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .demo-divider p {
+    font-size: 0.8rem;
+    color: var(--text-3);
+  }
+
+  /* ═══════════════════════════════════════════
+     NAVBAR
+     ═══════════════════════════════════════════ */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: 60px;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--font-display);
+    font-weight: 700; font-size: 1.1rem;
+  }
+  .nav-logo-mark {
+    width: 32px; height: 32px; border-radius: 6px;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    color: #000; font-weight: 700; font-size: 0.85rem;
+    font-family: var(--font-display);
+  }
+  .nav-links {
+    display: flex; gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none; color: var(--text-2);
+    font-size: 0.85rem; font-weight: 500;
+    transition: color 0.2s;
+    font-family: var(--font-body);
+  }
+  .nav-links a:hover { color: var(--text-1); }
+  .nav-links a.active { color: var(--accent); }
+  .nav-cta {
+    background: var(--accent); color: #000;
+    border: none; padding: 8px 20px; border-radius: 6px;
+    font-family: var(--font-display);
+    font-weight: 700; font-size: 0.8rem;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .nav-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(255, 77, 0, 0.3);
+  }
+
+  /* ═══════════════════════════════════════════
+     HERO SECTION
+     ═══════════════════════════════════════════ */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    position: relative;
+    padding: 0 clamp(24px, 6vw, 80px);
+    overflow: hidden;
+  }
+  .hero-watermark {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-display);
+    font-size: clamp(100px, 18vw, 280px);
+    font-weight: 700;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.04);
+    text-transform: uppercase;
+    letter-spacing: -0.04em;
+    user-select: none;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 640px;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px;
+    background: var(--accent-dim);
+    border: 1px solid rgba(255, 77, 0, 0.2);
+    border-radius: 6px;
+    font-size: 0.75rem; font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 28px;
+    font-family: var(--font-display);
+  }
+  .hero-badge-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    margin-bottom: 24px;
+  }
+  .hero h1 .accent { color: var(--accent); }
+  .hero h1 .cyan { color: var(--cyan); }
+  .hero-sub {
+    font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+    color: var(--text-2);
+    line-height: 1.7;
+    max-width: 480px;
+    margin-bottom: 40px;
+  }
+  .hero-actions {
+    display: flex; gap: 14px; flex-wrap: wrap;
+  }
+  .btn-primary {
+    background: var(--accent); color: #000;
+    border: none; padding: 14px 32px; border-radius: 6px;
+    font-family: var(--font-display);
+    font-weight: 700; font-size: 0.85rem;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(255, 77, 0, 0.35);
+  }
+  .btn-ghost {
+    background: transparent; color: var(--text-1);
+    border: 1px solid var(--border-hover); padding: 14px 32px; border-radius: 6px;
+    font-family: var(--font-display);
+    font-weight: 600; font-size: 0.85rem;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-ghost:hover {
+    border-color: var(--text-2);
+    transform: translateY(-1px);
+  }
+
+  /* Right side geometric element */
+  .hero-visual {
+    position: absolute;
+    right: clamp(20px, 8vw, 120px);
+    top: 50%; transform: translateY(-50%);
+    width: clamp(250px, 30vw, 450px);
+    height: clamp(250px, 30vw, 450px);
+    z-index: 1;
+  }
+  .hero-shape {
+    width: 100%; height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--accent), #FF2D00);
+    transform: rotate(12deg);
+    opacity: 0.08;
+    position: absolute;
+  }
+  .hero-shape-2 {
+    width: 70%; height: 70%;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--cyan), transparent);
+    position: absolute;
+    top: 20%; left: 15%;
+    opacity: 0.06;
+    filter: blur(40px);
+  }
+  .hero-shape-3 {
+    width: 200px; height: 200px;
+    border: 2px solid rgba(255, 77, 0, 0.15);
+    border-radius: 50%;
+    position: absolute;
+    top: 30%; left: 25%;
+    animation: spin-slow 20s linear infinite;
+  }
+  @keyframes spin-slow { to { transform: rotate(360deg); } }
+
+  .hero-stats {
+    position: absolute;
+    bottom: 60px; left: clamp(24px, 6vw, 80px);
+    display: flex; gap: 48px; z-index: 2;
+  }
+  .hero-stat {
+    text-align: left;
+  }
+  .hero-stat-num {
+    font-family: var(--font-display);
+    font-size: 1.8rem; font-weight: 700;
+    color: var(--text-1);
+  }
+  .hero-stat-label {
+    font-size: 0.75rem; color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 2px;
+  }
+
+  /* ═══════════════════════════════════════════
+     FEATURES SECTION
+     ═══════════════════════════════════════════ */
+  .features {
+    padding: 80px clamp(24px, 6vw, 80px);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .features-header {
+    margin-bottom: 56px;
+  }
+  .features-header h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 12px;
+  }
+  .features-header p {
+    color: var(--text-2);
+    font-size: 1rem;
+    max-width: 500px;
+    line-height: 1.6;
+  }
+
+  /* Magazine/Bento layout */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(180px, auto);
+    gap: 16px;
+  }
+  .feature-card {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-3px);
+  }
+  .feature-card.span-2 {
+    grid-column: span 2;
+  }
+  .feature-card.tall {
+    grid-row: span 2;
+  }
+  .feature-card-accent {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .feature-icon {
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+  }
+  .feature-icon svg {
+    width: 20px; height: 20px;
+  }
+  .feature-card h3 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .feature-card p {
+    color: var(--text-2);
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+  .feature-tag {
+    margin-top: 16px;
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ═══════════════════════════════════════════
+     LOGIN PAGE PREVIEW
+     ═══════════════════════════════════════════ */
+  .login-preview {
+    display: flex;
+    min-height: 600px;
+    margin: 0 40px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .login-left {
+    flex: 1;
+    background: var(--surface-0);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .login-left-text {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 700;
+    writing-mode: vertical-lr;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    color: rgba(255, 255, 255, 0.03);
+    letter-spacing: -0.04em;
+    user-select: none;
+  }
+  .login-left-accent {
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 200px; height: 200px;
+    background: var(--accent);
+    border-radius: 50%;
+    opacity: 0.05;
+    filter: blur(60px);
+  }
+  .login-right {
+    flex: 1;
+    background: var(--surface-1);
+    padding: 60px 48px;
+    display: flex; flex-direction: column;
+    justify-content: center;
+  }
+  .login-right h2 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+  .login-right .sub {
+    color: var(--text-2);
+    font-size: 0.9rem;
+    margin-bottom: 36px;
+  }
+  .form-group {
+    margin-bottom: 20px;
+  }
+  .form-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-2);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    font-family: var(--font-display);
+  }
+  .form-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-hover);
+    padding: 12px 0;
+    color: var(--text-1);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .form-input:focus {
+    border-bottom-color: var(--accent);
+  }
+  .form-input::placeholder { color: var(--text-3); }
+  .login-btn {
+    width: 100%;
+    margin-top: 12px;
+  }
+  .login-divider {
+    display: flex; align-items: center; gap: 12px;
+    margin: 20px 0;
+    color: var(--text-3);
+    font-size: 0.8rem;
+  }
+  .login-divider::before, .login-divider::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: var(--border);
+  }
+  .google-btn {
+    width: 100%;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    color: var(--text-1);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .google-btn:hover {
+    border-color: var(--border-hover);
+  }
+
+  /* Role toggle */
+  .role-toggle {
+    display: flex;
+    background: var(--surface-2);
+    border-radius: 6px;
+    padding: 3px;
+    margin-bottom: 28px;
+    border: 1px solid var(--border);
+  }
+  .role-toggle-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    color: var(--text-2);
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.25s;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .role-toggle-btn.active {
+    background: var(--accent);
+    color: #000;
+  }
+
+  /* ═══════════════════════════════════════════
+     DASHBOARD PREVIEW
+     ═══════════════════════════════════════════ */
+  .dashboard-preview {
+    display: flex;
+    min-height: 500px;
+    margin: 0 40px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .dash-sidebar {
+    width: 220px;
+    background: var(--surface-1);
+    border-right: 1px solid var(--border);
+    padding: 20px 12px;
+    display: flex; flex-direction: column;
+    gap: 2px;
+  }
+  .dash-sidebar-logo {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px;
+    margin-bottom: 24px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+  .dash-nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: var(--text-2);
+    transition: all 0.2s;
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    font-weight: 500;
+  }
+  .dash-nav-item:hover {
+    color: var(--text-1);
+    background: rgba(255, 255, 255, 0.02);
+  }
+  .dash-nav-item.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: var(--accent-dim);
+    font-weight: 600;
+  }
+  .dash-nav-item svg {
+    width: 18px; height: 18px;
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+  .dash-nav-item.active svg { opacity: 1; color: var(--accent); }
+
+  .dash-content {
+    flex: 1;
+    background: var(--surface-0);
+    padding: 28px;
+    overflow-y: auto;
+  }
+  .dash-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 28px;
+  }
+  .dash-header h1 {
+    font-family: var(--font-display);
+    font-size: 1.5rem; font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .dash-avatar {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--surface-2);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700; font-size: 0.8rem;
+    color: var(--text-2);
+    border: 1px solid var(--border);
+  }
+
+  /* Stat cards */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .stat-card {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+  }
+  .stat-card-accent {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px; border-radius: 8px 0 0 8px;
+  }
+  .stat-card-label {
+    font-size: 0.72rem;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-family: var(--font-display);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .stat-card-value {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .stat-card-sub {
+    font-size: 0.75rem;
+    color: var(--text-2);
+    margin-top: 6px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .stat-up { color: var(--success); }
+  .stat-down { color: var(--danger); }
+
+  /* Chart placeholder */
+  .dash-panels {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 14px;
+  }
+  .dash-panel {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+  }
+  .dash-panel h3 {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .chart-bars {
+    display: flex; align-items: flex-end; gap: 8px;
+    height: 140px;
+  }
+  .chart-bar {
+    flex: 1;
+    border-radius: 4px 4px 0 0;
+    transition: height 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+  }
+  .chart-bar-label {
+    position: absolute;
+    bottom: -22px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.65rem;
+    color: var(--text-3);
+    font-family: var(--font-display);
+  }
+
+  /* Burnout ring */
+  .burnout-ring {
+    width: 140px; height: 140px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .burnout-ring svg {
+    transform: rotate(-90deg);
+  }
+  .burnout-ring-value {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  .burnout-ring-num {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .burnout-ring-label {
+    font-size: 0.7rem;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* AI insight panel */
+  .ai-insight {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .ai-insight-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: var(--accent-dim);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .ai-insight-icon svg {
+    width: 18px; height: 18px;
+    color: var(--accent);
+  }
+  .ai-insight h4 {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .ai-insight p {
+    color: var(--text-2);
+    font-size: 0.82rem;
+    line-height: 1.6;
+  }
+
+  /* ═══ RESPONSIVE ═══ */
+  @media (max-width: 900px) {
+    .features-grid { grid-template-columns: 1fr; }
+    .feature-card.span-2 { grid-column: span 1; }
+    .login-preview { flex-direction: column; }
+    .login-left { min-height: 200px; }
+    .dashboard-preview { flex-direction: column; }
+    .dash-sidebar { width: 100%; flex-direction: row; overflow-x: auto; }
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+    .dash-panels { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .hero-stats { position: relative; bottom: auto; left: auto; margin-top: 60px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     NAVBAR
+     ═══════════════════════════════════════════ -->
+<nav class="nav">
+  <div class="nav-logo">
+    <div class="nav-logo-mark">SP</div>
+    Student Pulse
+  </div>
+  <ul class="nav-links">
+    <li><a href="#" class="active">Features</a></li>
+    <li><a href="#">Dashboard</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+  <button class="nav-cta">Get Started</button>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     HERO SECTION
+     ═══════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-watermark">STUDENT</div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      AI-Powered Wellness
+    </div>
+    <h1>
+      Your Wellness,<br>
+      <span class="accent">Amplified.</span>
+    </h1>
+    <p class="hero-sub">
+      Track daily habits, predict burnout with AI, manage homework & projects, 
+      and build a healthier academic life — all in one platform.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary">
+        Get Started Free
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </button>
+      <button class="btn-ghost">Explore Features</button>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-shape"></div>
+    <div class="hero-shape-2"></div>
+    <div class="hero-shape-3"></div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">10K+</div>
+      <div class="hero-stat-label">Students</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">98%</div>
+      <div class="hero-stat-label">Accuracy</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">4.9</div>
+      <div class="hero-stat-label">Rating</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FEATURES — BENTO GRID
+     ═══════════════════════════════════════════ -->
+<div class="demo-divider">
+  <h2>↓ Features Section</h2>
+  <p>Bento/magazine grid layout — varied card sizes, left accent borders, Lucide icons</p>
+</div>
+
+<section class="features">
+  <div class="features-header">
+    <h2>Everything you need<br>to <span style="color: var(--accent)">thrive.</span></h2>
+    <p>A complete toolkit for students who want to stay healthy, productive, and balanced.</p>
+  </div>
+
+  <div class="features-grid">
+    <!-- Card 1: AI Burnout — SPAN 2 -->
+    <div class="feature-card span-2">
+      <div class="feature-card-accent" style="background: var(--accent);"></div>
+      <div>
+        <div class="feature-icon" style="background: var(--accent-dim);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 12 12 6"/><path d="M12 12 16 14"/></svg>
+        </div>
+        <h3>AI Burnout Detection</h3>
+        <p>Our intelligent algorithm analyzes your daily inputs and predicts burnout risk before it hits. Get real-time alerts and personalized recovery plans.</p>
+      </div>
+      <span class="feature-tag" style="background: var(--accent-dim); color: var(--accent);">Core Feature</span>
+    </div>
+
+    <!-- Card 2: Smart Dashboard -->
+    <div class="feature-card">
+      <div class="feature-card-accent" style="background: var(--cyan);"></div>
+      <div>
+        <div class="feature-icon" style="background: var(--cyan-dim);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        </div>
+        <h3>Smart Dashboard</h3>
+        <p>Real-time overview of study habits, energy levels, and wellness metrics.</p>
+      </div>
+    </div>
+
+    <!-- Card 3: Daily Tracker -->
+    <div class="feature-card">
+      <div class="feature-card-accent" style="background: #A855F7;"></div>
+      <div>
+        <div class="feature-icon" style="background: rgba(168, 85, 247, 0.1);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg>
+        </div>
+        <h3>Daily Tracker</h3>
+        <p>Log sleep, study, stress, mood, hydration and more in under 60 seconds.</p>
+      </div>
+    </div>
+
+    <!-- Card 4: Homework Manager -->
+    <div class="feature-card">
+      <div class="feature-card-accent" style="background: #F59E0B;"></div>
+      <div>
+        <div class="feature-icon" style="background: rgba(245, 158, 11, 0.1);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8Z"/><path d="M15 3v4a2 2 0 0 0 2 2h4"/></svg>
+        </div>
+        <h3>Homework Manager</h3>
+        <p>Track assignments with deadlines, priorities, and completion status.</p>
+      </div>
+    </div>
+
+    <!-- Card 5: Achievements — SPAN 2 -->
+    <div class="feature-card span-2">
+      <div class="feature-card-accent" style="background: var(--success);"></div>
+      <div>
+        <div class="feature-icon" style="background: rgba(0, 196, 140, 0.1);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
+        </div>
+        <h3>Achievements & XP</h3>
+        <p>Earn badges, build streaks, and level up as you maintain healthy habits. Gamified motivation that makes wellness feel rewarding.</p>
+      </div>
+      <span class="feature-tag" style="background: rgba(0, 196, 140, 0.1); color: var(--success);">Gamification</span>
+    </div>
+
+    <!-- Card 6: Parent Dashboard -->
+    <div class="feature-card">
+      <div class="feature-card-accent" style="background: #3B82F6;"></div>
+      <div>
+        <div class="feature-icon" style="background: rgba(59, 130, 246, 0.1);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Parent Dashboard</h3>
+        <p>Parents can monitor their child's wellbeing with linked accounts and real-time insights.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     LOGIN PAGE PREVIEW
+     ═══════════════════════════════════════════ -->
+<div class="demo-divider">
+  <h2>↓ Login Page</h2>
+  <p>Split-screen layout — oversized text left, clean form right, bottom-border inputs</p>
+</div>
+
+<section style="padding: 20px 0 60px;">
+  <div class="login-preview">
+    <div class="login-left">
+      <div class="login-left-text">STUDENT PULSE</div>
+      <div class="login-left-accent"></div>
+    </div>
+    <div class="login-right">
+      <h2>Welcome back</h2>
+      <p class="sub">Sign in to your account to continue</p>
+
+      <div class="role-toggle">
+        <button class="role-toggle-btn active">Student</button>
+        <button class="role-toggle-btn">Parent</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="you@university.edu">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" placeholder="••••••••">
+      </div>
+
+      <button class="btn-primary login-btn">Sign In</button>
+
+      <div class="login-divider">or</div>
+
+      <button class="google-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Continue with Google
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     DASHBOARD PREVIEW
+     ═══════════════════════════════════════════ -->
+<div class="demo-divider">
+  <h2>↓ Dashboard</h2>
+  <p>Solid dark panels, Lucide icons, left accent borders, orange/cyan data colors</p>
+</div>
+
+<section style="padding: 20px 0 80px;">
+  <div class="dashboard-preview">
+    <!-- Sidebar -->
+    <div class="dash-sidebar">
+      <div class="dash-sidebar-logo">
+        <div class="nav-logo-mark" style="width: 28px; height: 28px; font-size: 0.7rem;">SP</div>
+        <span style="font-size: 0.85rem;">Pulse</span>
+      </div>
+
+      <div class="dash-nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Overview
+      </div>
+      <div class="dash-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg>
+        Tracker
+      </div>
+      <div class="dash-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8Z"/><path d="M15 3v4a2 2 0 0 0 2 2h4"/></svg>
+        Assignments
+      </div>
+      <div class="dash-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 12 12 6"/><path d="M12 12 16 14"/></svg>
+        Burnout
+      </div>
+      <div class="dash-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+        Productivity
+      </div>
+      <div class="dash-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
+        Achievements
+      </div>
+      <div class="dash-nav-item" style="margin-top: auto;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+        Settings
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="dash-content">
+      <div class="dash-header">
+        <h1>Overview</h1>
+        <div class="dash-avatar">DP</div>
+      </div>
+
+      <!-- AI Insight -->
+      <div class="ai-insight">
+        <div class="ai-insight-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 12 12 6"/><path d="M12 12 16 14"/></svg>
+        </div>
+        <div>
+          <h4>Pulse AI Insight</h4>
+          <p>Your stress levels have been elevated for 3 days. Consider reducing study hours by 20% and adding a 30-min break between sessions.</p>
+        </div>
+      </div>
+
+      <!-- Stat cards -->
+      <div class="stat-row">
+        <div class="stat-card">
+          <div class="stat-card-accent" style="background: var(--accent);"></div>
+          <div class="stat-card-label">Burnout Risk</div>
+          <div class="stat-card-value" style="color: var(--accent);">34%</div>
+          <div class="stat-card-sub stat-down">↓ 12% from last week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-accent" style="background: var(--cyan);"></div>
+          <div class="stat-card-label">Productivity</div>
+          <div class="stat-card-value" style="color: var(--cyan);">78</div>
+          <div class="stat-card-sub stat-up">↑ 5 pts this week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-accent" style="background: var(--success);"></div>
+          <div class="stat-card-label">Streak</div>
+          <div class="stat-card-value" style="color: var(--success);">12d</div>
+          <div class="stat-card-sub">Personal best!</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-accent" style="background: #A855F7;"></div>
+          <div class="stat-card-label">XP Level</div>
+          <div class="stat-card-value" style="color: #A855F7;">Lv.7</div>
+          <div class="stat-card-sub">340 / 500 XP</div>
+        </div>
+      </div>
+
+      <!-- Chart + Burnout Ring -->
+      <div class="dash-panels">
+        <div class="dash-panel">
+          <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+            Weekly Productivity
+          </h3>
+          <div class="chart-bars" style="padding-bottom: 24px;">
+            <div class="chart-bar" style="height: 60%; background: var(--accent);"><span class="chart-bar-label">Mon</span></div>
+            <div class="chart-bar" style="height: 85%; background: var(--accent);"><span class="chart-bar-label">Tue</span></div>
+            <div class="chart-bar" style="height: 45%; background: rgba(255,77,0,0.4);"><span class="chart-bar-label">Wed</span></div>
+            <div class="chart-bar" style="height: 92%; background: var(--accent);"><span class="chart-bar-label">Thu</span></div>
+            <div class="chart-bar" style="height: 70%; background: var(--accent);"><span class="chart-bar-label">Fri</span></div>
+            <div class="chart-bar" style="height: 35%; background: rgba(255,77,0,0.4);"><span class="chart-bar-label">Sat</span></div>
+            <div class="chart-bar" style="height: 50%; background: rgba(255,77,0,0.4);"><span class="chart-bar-label">Sun</span></div>
+          </div>
+        </div>
+
+        <div class="dash-panel" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <h3 style="align-self: flex-start;">Burnout Risk</h3>
+          <div class="burnout-ring">
+            <svg width="140" height="140" viewBox="0 0 140 140">
+              <circle cx="70" cy="70" r="60" fill="none" stroke="var(--surface-2)" stroke-width="8"/>
+              <circle cx="70" cy="70" r="60" fill="none" stroke="var(--accent)" stroke-width="8"
+                stroke-dasharray="377" stroke-dashoffset="248" stroke-linecap="round"/>
+            </svg>
+            <div class="burnout-ring-value">
+              <div class="burnout-ring-num">34%</div>
+              <div class="burnout-ring-label">Low Risk</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer style="text-align: center; padding: 40px; border-top: 1px solid var(--border); color: var(--text-3); font-size: 0.8rem;">
+  <p>StudentPulse Redesign Demo · "Dark Forge" Direction · Space Grotesk + DM Sans · Orange-Red + Cyan</p>
+  <p style="margin-top: 6px; color: var(--text-3);">This is a design preview — not the live application</p>
+</footer>
+
+</body>
+</html>
