@@ -1,6 +1,7 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import SplashScreen from '@/components/ui/SplashScreen';
+import ThemeToggle from '@/components/ui/ThemeToggle';
 
 // Layouts
 import DashboardLayout from '@/layouts/DashboardLayout';
@@ -47,9 +48,14 @@ function PageLoader() {
 }
 
 export default function App() {
+  const { pathname } = useLocation();
+  const isDashboard = pathname.startsWith('/dashboard') || pathname.startsWith('/parent');
+
   return (
     <>
       <SplashScreen />
+      {/* Global floating theme toggle — hidden on dashboard/parent (they have inline toggles) */}
+      {!isDashboard && <ThemeToggle />}
       <div style={{ position: 'relative', zIndex: 1 }}>
         <Suspense fallback={<PageLoader />}>
           <Routes>
