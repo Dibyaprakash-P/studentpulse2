@@ -178,6 +178,13 @@
    ═══════════════════════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; padding: 0; margin: 0; }
 
+/* Hide Netlify badge */
+.netlify-badge, [href*="netlify"], a[title*="Netlify"], .netlify-identity-menu,
+div[style*="position: fixed"][style*="bottom"] > a[href*="netlify"] { display: none !important; }
+[data-netlify-identity-menu] { display: none !important; }
+body > a[href*="netlify.com"] { display: none !important; }
+
+
 body {
   background-color: var(--bg-primary);
   color: var(--text-main);
