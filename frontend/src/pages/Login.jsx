@@ -171,63 +171,17 @@ export default function LoginRegister() {
       return;
     }
 
-    // Wait for the GIS library to load
-    if (typeof window === "undefined" || !window.google?.accounts) {
-      setError("Google Sign-In is still loading. Please try again in a moment.");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      // Approach 1: Use FedCM / One Tap (no popups, no COOP issues)
-      if (window.google.accounts.id) {
-        window.google.accounts.id.initialize({
-          client_id: clientId,
-          callback: handleGoogleCredentialResponse,
-          auto_select: false,
-          cancel_on_tap_outside: false,
-          use_fedcm_for_prompt: true,
-        });
-
-        window.google.accounts.id.prompt((notification) => {
-          if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-            console.log("One Tap unavailable, using redirect flow. Reason:",
-              notification.isNotDisplayed()
-                ? notification.getNotDisplayedReason()
-                : notification.getSkippedReason()
-            );
-
-            // Approach 2: Redirect-based OAuth (no popups, no COOP issues)
-            // Redirect the entire page to Google's auth endpoint
-            const redirectUri = window.location.origin + "/login";
-            const authUrl = new URL("https://accounts.google.com/o/oauth2/v2/auth");
-            authUrl.searchParams.set("client_id", clientId);
-            authUrl.searchParams.set("redirect_uri", redirectUri);
-            authUrl.searchParams.set("response_type", "id_token");
-            authUrl.searchParams.set("scope", "openid email profile");
-            authUrl.searchParams.set("nonce", Math.random().toString(36).substring(2));
-            authUrl.searchParams.set("prompt", "select_account");
-            window.location.href = authUrl.toString();
-          }
-          // If displayed, the user is interacting with the FedCM prompt — callback handles it
-        });
-      } else {
-        // GIS library loaded but google.accounts.id not available — use redirect
-        const redirectUri = window.location.origin + "/login";
-        const authUrl = new URL("https://accounts.google.com/o/oauth2/v2/auth");
-        authUrl.searchParams.set("client_id", clientId);
-        authUrl.searchParams.set("redirect_uri", redirectUri);
-        authUrl.searchParams.set("response_type", "id_token");
-        authUrl.searchParams.set("scope", "openid email profile");
-        authUrl.searchParams.set("nonce", Math.random().toString(36).substring(2));
-        authUrl.searchParams.set("prompt", "select_account");
-        window.location.href = authUrl.toString();
-      }
-    } catch (err) {
-      console.error("Google Sign-In error:", err);
-      setError("Failed to initialize Google Sign-In. Please try again.");
-      setLoading(false);
-    }
+    // Use redirect-based OAuth flow (no popups, no COOP issues, no deprecated APIs)
+    // Redirects the user to Google's auth page, then back to /login with id_token in the hash
+    const redirectUri = window.location.origin + "/login";
+    const authUrl = new URL("https://accounts.google.com/o/oauth2/v2/auth");
+    authUrl.searchParams.set("client_id", clientId);
+    authUrl.searchParams.set("redirect_uri", redirectUri);
+    authUrl.searchParams.set("response_type", "id_token");
+    authUrl.searchParams.set("scope", "openid email profile");
+    authUrl.searchParams.set("nonce", Math.random().toString(36).substring(2));
+    authUrl.searchParams.set("prompt", "select_account");
+    window.location.href = authUrl.toString();
   };
 
   const switchMode = () => {
